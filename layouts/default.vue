@@ -1,5 +1,5 @@
 <template>
-  <v-app dark>
+  <v-app v-bind:style="{ background: $vuetify.theme.themes.light.background }">
     <div v-if="$nuxt.$route.name === 'login'">
       <Nuxt />
     </div>

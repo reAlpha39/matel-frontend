@@ -42,7 +42,8 @@ export default {
       dark: false,
       themes: {
         light: {
-          primary: colors.purple.darken2,
+          primary: colors.purple.darken4,
+          background: "#E9E4ED",
           accent: colors.grey.darken3,
           secondary: colors.amber.darken3,
           info: colors.teal.lighten1,
