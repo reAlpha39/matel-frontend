@@ -30,11 +30,17 @@
             <v-btn
               class="rounded-pill"
               height="50"
+              :disabled="loading"
+              :loading="loading"
               block
               color="primary"
               @click="userLogin"
               >Login</v-btn
             >
+            <div class="mt-6"></div>
+            <v-alert v-show="isError" type="error">
+              <div>{{ errorMessage }}</div>
+            </v-alert>
             <div class="mt-6"></div>
             <v-row class="align-center justify-center">
               <p>Belum memiliki akun?&nbsp;</p>
@@ -54,6 +60,9 @@ export default {
     return {
       show1: false,
       show2: true,
+      isError: false,
+      errorMessage: "",
+      loading: false,
       rules: {
         min: (v) => v.length >= 8 || "Min 8 characters",
         emailMatch: () => `The email and password you entered don't match`,
@@ -66,14 +75,24 @@ export default {
   },
   methods: {
     async userLogin() {
+      this.isError = false;
+      this.loading = true;
       try {
         let response = await this.$auth.loginWith("local", {
           data: this.login,
         });
-        this.$auth.setUser(response.data.data);
-        console.log(response);
+        this.loading = false;
+        if (response.data.data.is_admin === 1) {
+          this.$router.push("home");
+        } else {
+          this.loading = false;
+          this.isError = true;
+          this.errorMessage = "Anda bukan admin";
+        }
       } catch (error) {
-        console.log(error);
+        this.loading = false;
+        this.isError = true;
+        this.errorMessage = error;
       }
     },
   },
