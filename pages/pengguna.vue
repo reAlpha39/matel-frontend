@@ -21,6 +21,7 @@
 <script>
 export default {
   name: "PenggunaPage",
+  middleware: "authenticated",
   data() {
     return {
       search: "",
