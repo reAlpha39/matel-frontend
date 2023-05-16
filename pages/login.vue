@@ -12,12 +12,12 @@
                 placeholder="Masukan Alamat Email"
                 name="email"
                 type="text"
-                v-model="email"
+                v-model="login.email"
                 outlined
               ></v-text-field>
               <v-text-field
                 class="rounded-pill"
-                v-model="password"
+                v-model="login.password"
                 :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                 :type="show1 ? 'text' : 'password'"
                 name="input-10-1"
@@ -32,7 +32,7 @@
               height="50"
               block
               color="primary"
-              @click="loginHandler"
+              @click="userLogin"
               >Login</v-btn
             >
             <div class="mt-6"></div>
@@ -54,29 +54,26 @@ export default {
     return {
       show1: false,
       show2: true,
-      //   password: "Password",
       rules: {
         min: (v) => v.length >= 8 || "Min 8 characters",
         emailMatch: () => `The email and password you entered don't match`,
       },
-      email: null,
-      password: null,
+      login: {
+        email: "",
+        password: "",
+      },
     };
   },
   methods: {
-    async loginHandler() {
-      const data = { email: this.email, password: this.password };
-      console.log(data);
+    async userLogin() {
       try {
-        const response = await this.$auth.loginWith("local", { data: data });
+        let response = await this.$auth.loginWith("local", {
+          data: this.login,
+        });
+        this.$auth.setUser(response.data.data);
         console.log(response);
-        this.$auth.$storage.setUniversal("email", response.data.email);
-        await this.$auth.setUserToken(
-          response.data.access_token,
-          response.data.refresh_token
-        );
-      } catch (e) {
-        console.log(e.message);
+      } catch (error) {
+        console.log(error);
       }
     },
   },
