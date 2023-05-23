@@ -83,7 +83,6 @@ export default {
         });
         this.loading = false;
         if (response.data.data.is_admin === 1) {
-          this.$auth.loggedIn = true;
           this.$router.push("home");
         } else {
           this.loading = false;
@@ -99,5 +98,3 @@ export default {
   },
 };
 </script>
-
-<style></style>
