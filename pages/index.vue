@@ -2,7 +2,7 @@
   <v-row class="mb-6 text-center" no-gutters>
     <v-col xs="12" sm="12" md="6" lg="4" xl="2">
       <v-card color="primary pa-6 ma-6">
-        <h1 class="text-h1">12</h1>
+        <h1 class="text-h1">{{ total }}</h1>
         <p class="text-body-1">Total leasing</p>
       </v-card>
     </v-col>
@@ -48,5 +48,26 @@
 <script>
 export default {
   name: "IndexPage",
+  data() {
+    return {
+      total: null,
+    };
+  },
+  methods: {
+    fetchData() {
+      this.loading = true;
+      this.$axios
+        .get("leasing")
+        .then((response) => {
+          this.total = response.data.data.total;
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+  },
 };
 </script>
