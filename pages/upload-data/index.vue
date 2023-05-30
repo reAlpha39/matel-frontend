@@ -15,6 +15,14 @@
             </div>
           </v-alert>
 
+          <v-alert v-show="error" type="error">
+            <div>
+              <div class="text-subtitle-1 text--black">
+                {{ error }}
+              </div>
+            </div>
+          </v-alert>
+
           <!--  -->
           <v-divider
             :thickness="4"
@@ -122,7 +130,7 @@ export default {
           })
           .catch((error) => {
             this.isLoading = false;
-            this.error = true;
+            this.error = error;
             // Handle upload error
             console.error(error);
           });
