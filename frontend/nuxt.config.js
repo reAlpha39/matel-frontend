@@ -44,8 +44,8 @@ export default {
   },
 
   axios: {
-    // baseURL: "https://matel-backend-production.up.railway.app/",
-    baseURL: "http://localhost:8080/",
+    baseURL: "https://matel-backend-production.up.railway.app/",
+    // baseURL: "http://localhost:8080/",
   },
 
   build: { transpile: ["defu"] },
