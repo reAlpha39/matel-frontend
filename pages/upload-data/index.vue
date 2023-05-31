@@ -10,7 +10,7 @@
           <v-alert v-show="success" type="success">
             <div>
               <div class="text-subtitle-1 text--black">
-                Data Berhasil di Upload!
+                Data Berhasil di Upload! Dalam {{ this.time }} Detik
               </div>
             </div>
           </v-alert>
@@ -100,6 +100,7 @@ export default {
       error: null,
       file: null,
       formData: null,
+      time: null,
     };
   },
   methods: {
@@ -125,6 +126,7 @@ export default {
             this.formData = null;
             this.success = true;
             this.isLoading = false;
+            this.time = response.data.data
             // Handle successful upload
             console.log(response.data);
           })
