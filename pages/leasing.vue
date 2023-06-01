@@ -112,6 +112,7 @@ export default {
           },
         })
         .then((response) => {
+          console.log(response)
           this.items = response.data.data.leasing;
           this.totalPages = Math.ceil(response.data.data.total / this.limit);
         })
