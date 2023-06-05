@@ -44,13 +44,17 @@ export default {
   },
 
   axios: {
-    // baseURL: "https://matel-backend-production.up.railway.app/",
-    baseURL: "https://167.172.69.241:8080/",
+    baseURL: "http://localhost:8080/",
+    // baseURL: "http://167.172.69.241:8080/",
   },
 
   build: { transpile: ["defu"] },
 
   modules: ["@nuxtjs/axios", "@nuxtjs/auth-next"],
+
+  router: {
+    middleware: ['auth']
+  },
 
   auth: {
     strategies: {
@@ -58,17 +62,17 @@ export default {
         token: {
           property: "token",
           global: true,
-          // required: true,
-          // type: 'Bearer'
+          required: true,
+          type: 'Bearer'
         },
         user: {
-          property: "user",
-          // autoFetch: true
+          property: false,
+          autoFetch: true
         },
         endpoints: {
-          login: { url: "/login", method: "post", propertyName: "data.token" },
+          login: { url: "login-web", method: "post", propertyName: "token" },
           logout: false,
-          user: { url: "/profil", method: "get", propertyName: "data" },
+          user: { url: "profil", method: "get" },
         },
       },
     },

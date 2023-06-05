@@ -53,6 +53,7 @@
 <script>
 export default {
   name: "IndexPage",
+  middleware: 'auth',
   data() {
     return {
       loading: false,
@@ -66,16 +67,9 @@ export default {
     fetchData() {
       this.loading = true;
       this.$axios
-        .get("leasing", {
-          params: {
-            page: this.currentPage,
-            limit: this.limit,
-            search: this.search,
-          },
-        })
+        .get("home")
         .then((response) => {
-          console.log(response.data.data.total)
-          this.total = response.data.data.total;
+          this.total = response.data.data.leasing;
           this.loading = false;
         })
         .catch((error) => {
@@ -86,6 +80,7 @@ export default {
           this.loading = false;
         });
     },
+    
   },
 };
 </script>

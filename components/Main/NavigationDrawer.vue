@@ -47,6 +47,9 @@
     </v-navigation-drawer>
     <v-app-bar fixed app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-btn @click="logout">
+        Logout
+      </v-btn>
     </v-app-bar>
   </div>
 </template>
@@ -106,5 +109,11 @@ export default {
       rightDrawer: false,
     };
   },
+  methods:{
+    async logout() {
+      await this.$auth.logout()
+      this.$router.push("/login");
+    }
+  }
 };
 </script>
