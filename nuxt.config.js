@@ -45,7 +45,7 @@ export default {
 
   axios: {
     baseURL: "http://localhost:8080/",
-    // baseURL: "http://167.172.69.241:8080/",
+    // baseURL: "https://taurusaplikasi.com/api/",
   },
 
   build: { transpile: ["defu"] },

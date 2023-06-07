@@ -47,6 +47,10 @@
     </v-navigation-drawer>
     <v-app-bar fixed app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-spacer></v-spacer>
+      <div class="mr-5">
+        Selamat datang, {{ $auth.user.data.username }}
+      </div>
       <v-btn @click="logout">
         Logout
       </v-btn>
