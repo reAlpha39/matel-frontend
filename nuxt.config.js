@@ -50,7 +50,7 @@ export default {
 
   build: { transpile: ["defu"] },
 
-  modules: ["@nuxtjs/axios", "@nuxtjs/auth-next"],
+  modules: ["@nuxtjs/axios", "@nuxtjs/auth-next",],
 
   router: {
     middleware: ['auth']
