@@ -123,7 +123,6 @@ export default {
       this.isDetailModalOpen = true;
     },
     closeDetailModal() {
-      this.selectedUser = null;
       this.isDetailModalOpen = false;
     },
     searchUsers() {

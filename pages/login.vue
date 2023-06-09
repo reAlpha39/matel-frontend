@@ -82,6 +82,7 @@ export default {
           data: this.login,
         });
         this.loading = false;
+        console.log(this.$auth.user.data)
         if (this.$auth.loggedIn) {
           if (this.$auth.user.data.is_admin === 1) {
             this.$router.push("/");
