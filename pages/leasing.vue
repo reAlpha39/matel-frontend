@@ -7,7 +7,7 @@
           :items="filterOptions"
           :disabled="loading"
           outlined
-          placeholder="Show (Default 100)"
+          placeholder="Menampilkan (Default 100)"
           @change="setLimit(limit)"
         ></v-select>
       </v-col>
@@ -17,11 +17,13 @@
           placeholder="Cari berdasarkan leasing, cabang atau nama debitur"
           outlined
           prepend-inner-icon="mdi-magnify"
-          @input="debouncedFetchData"
+          @input="debouncedFetchLeasing"
         ></v-text-field>
       </v-col>
     </v-row>
-
+    <div class="text-h6 mb-5">
+      Total Data: {{ total }}
+    </div>
     <v-data-table
       :headers="headers"
       :items="numberedItems"
@@ -39,7 +41,7 @@
     <v-pagination
       v-model="currentPage"
       :length="totalPages"
-      @input="fetchData"
+      @input="fetchLeasing"
       color="primary"
       circle
       class="my-5 custom-pagination"
@@ -61,6 +63,7 @@ export default {
         itemsPerPage: 100,
       },
       totalPages: 10,
+      total: 10,
       search: "",
       currentPage: 1,
       limit: 100,
@@ -69,9 +72,8 @@ export default {
         { text: "25", value: "25" },
         { text: "50", value: "50" },
         { text: "100", value: "100" },
-        { text: "200", value: "200" },
       ],
-      debouncedFetchData: debounce(this.fetchData, 300),
+      debouncedFetchLeasing: debounce(this.fetchLeasing, 300),
     };
   },
   computed: {
@@ -94,26 +96,41 @@ export default {
     },
   },
   mounted() {
-    this.fetchData();
+    this.fetchLeasing();
+    this.fetchLeasingTotal();
   },
   methods: {
     setLimit(limit) {
       this.limit = limit;
-      this.fetchData();
+      this.fetchLeasing();
     },
-    fetchData() {
+    fetchLeasingTotal() {
+      this.loading = true;
+      this.$axios
+        .get("home")
+        .then((response) => {
+          this.total = response.data.data.leasing;
+          this.loading = false;
+        })
+        .catch((error) => {
+          console.error(error);
+          this.loading = false;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    fetchLeasing() {
       this.loading = true;
       this.$axios
         .get("leasing", {
           params: {
-            page: this.currentPage,
-            limit: this.limit,
             search: this.search,
           },
         })
         .then((response) => {
-          console.log(response)
-          this.items = response.data.data.leasing;
+          console.log(response.data)
+          this.items = response.data.data;
           this.totalPages = Math.ceil(response.data.data.total / this.limit);
         })
         .catch((error) => {

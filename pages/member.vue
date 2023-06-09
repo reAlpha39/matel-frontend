@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid>
       <v-row>
         <!-- <v-col cols="2">
           <v-select
@@ -27,12 +27,53 @@
         :items="filteredUsers"
         :search="search"
       >
-        <template #item.actions="{ item }">
-          <v-icon small class="mr-2" @click="editUser(item)">mdi-pencil</v-icon>
-          <v-icon small @click="deleteUser(item)">mdi-delete</v-icon>
+      <template v-slot:item.status="{ item }">
+          {{ item.status === 0 ? 'Trial' : 'Premium' }}
+        </template>
+        <template v-slot:item.actions="{ item }">
+          <v-btn color="primary" dark @click="openDetailModal(item)">
+            Detail
+          </v-btn>
+          <v-btn color="primary" outlined dark @click="editUser(item)">
+            Ubah Status
+          </v-btn>
+          <v-btn color="red" dark @click="deleteUser(item)">
+            Hapus
+          </v-btn>
         </template>
       </v-data-table>
+      <v-dialog v-model="isDetailModalOpen" max-width="500px">
+        <v-card>
+          <v-card-title>
+            <span class="headline">Detail Pengguna</span>
+          </v-card-title>
+          <v-card-text>
+            <v-text-field
+              v-model="selectedUser.username"
+              label="Username"
+              readonly
+              outlined
+            ></v-text-field>
+            <v-text-field
+              v-model="selectedUser.email"
+              label="Email"
+              readonly
+              outlined
+            ></v-text-field>
+            <v-text-field
+              :value="selectedUser.status === 0 ? 'Trial' : 'Premium'"
+              label="Status"
+              readonly
+              outlined
+            ></v-text-field>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn color="primary" dark @click="closeDetailModal">Tutup</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-container>
+
 </template>
 
 <script>
@@ -41,12 +82,18 @@ export default {
     return {
       users: [],
       search: '',
+      isDetailModalOpen: false,
+      selectedUser: {
+        username: '',
+        email: '',
+        status: 0
+      },
       headers: [
         { text: 'ID', value: 'id' },
         { text: 'Nama', value: 'username' },
         { text: 'Email', value: 'email' },
         { text: 'Status', value: 'status' },
-        { text: 'Aksi', value: 'aksi' },
+        { text: 'Actions', value: 'actions', sortable: false },
       ],
     };
   },
@@ -71,6 +118,14 @@ export default {
         .finally(() => {
         });
     },
+    openDetailModal(user) {
+      this.selectedUser = user;
+      this.isDetailModalOpen = true;
+    },
+    closeDetailModal() {
+      this.selectedUser = null;
+      this.isDetailModalOpen = false;
+    },
     searchUsers() {
       setTimeout(() => {
         this.fetchUsers();
@@ -81,6 +136,12 @@ export default {
     },
     deleteUser(user) {
       console.log('Delete user:', user);
+    },
+    isSelected(item) {
+      return this.selectedUser && this.selectedUser.id === item.id;
+    },
+    selectUser(item) {
+      this.selectedUser = item;
     },
   },
   mounted() {
