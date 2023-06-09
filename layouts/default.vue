@@ -38,7 +38,7 @@ export default {
         {
           icon: "mdi-account-multiple",
           title: "Pengguna",
-          to: "/pengguna",
+          to: "/member",
         },
         {
           icon: "mdi-information-outline",

@@ -69,7 +69,6 @@ export default {
       this.$axios
         .get("home")
         .then((response) => {
-          console.log(response.data.data)
           this.total = response.data.data.leasing;
           this.loading = false;
         })

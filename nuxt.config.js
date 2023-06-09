@@ -56,6 +56,14 @@ export default {
     middleware: ['auth']
   },
 
+  serverMiddleware: [
+    (req, res, next) => {
+      const userAgent = 'Frontend/1.0'; // User-Agent yang diinginkan
+      req.headers['user-agent'] = userAgent;
+      next();
+    },
+  ],
+
   auth: {
     strategies: {
       local: {
