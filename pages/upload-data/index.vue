@@ -3,7 +3,6 @@
     <v-card width="760">
       <v-responsive max-width="1000">
         <div class="pa-6">
-          <!--  -->
           <div class="text-h6 purple--text text--darken-4">UPLOAD DATA</div>
           <div class="py-1"></div>
 

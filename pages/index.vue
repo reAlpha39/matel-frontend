@@ -1,50 +1,39 @@
 <template>
-  <v-row class="mb-6 text-center" no-gutters>
+  <v-row class="mb-6" no-gutters>
     <v-col xs="12" sm="12" md="6" lg="4" xl="2">
-      <v-card color="primary pa-6 ma-6">
-        <div v-if="loading">
-          <h1 class="text-medium white--text">Loading...</h1>
+      <v-card  class="ma-5 pa-5">
+        <div>
+          <p class="text-h6 ma-0 primary--text">TOTAL LEASING</p>
+          <p class="text-body-1 mb-2">Jumlah leasing</p>
+          <h1 class="text-h3 ma-0 font-weight-bold">{{ loading ? 0 : homeTotal.leasing }}</h1>
         </div>
-        <div v-else>
-          <h1 class="text-medium white--text">{{ total }}</h1>
+      </v-card>
+    </v-col>
+    <v-col xs="12" sm="12" md="6" lg="4" xl="2">
+      <v-card  class="ma-5 pa-5">
+        <div>
+          <p class="text-h6 ma-0 primary--text">TOTAL MEMBER TRIAL</p>
+          <p class="text-body-1 mb-2">Jumlah member trial</p>
+          <h1 class="text-h3 ma-0 font-weight-bold">{{ loading ? 0 : homeTotal.expired_members }}</h1>
         </div>
-        <p class="text-body-1 white--text">Total leasing</p>
       </v-card>
     </v-col>
     <v-col xs="12" sm="12" md="6" lg="4" xl="2">
-      <v-card color="primary pa-6 ma-6">
-        <h1 class="text-medium white--text">12</h1>
-        <p class="text-body-1 white--text">Total Data Kendaraan</p>
+      <v-card  class="ma-5 pa-5">
+        <div>
+          <p class="text-h6 ma-0 primary--text">TOTAL MEMBER PREMIUM</p>
+          <p class="text-body-1 mb-2">Jumlah member premium</p>
+          <h1 class="text-h3 ma-0 font-weight-bold">{{ loading ? 0 : homeTotal.premium_members }}</h1>
+        </div>
       </v-card>
     </v-col>
     <v-col xs="12" sm="12" md="6" lg="4" xl="2">
-      <v-card color="primary pa-6 ma-6">
-        <h1 class="text-medium white--text">12</h1>
-        <p class="text-body-1 white--text">Total Data Kendaraan Per Leasing</p>
-      </v-card>
-    </v-col>
-    <v-col xs="12" sm="12" md="6" lg="4" xl="2">
-      <v-card color="primary pa-6 ma-6">
-        <h1 class="text-medium white--text">12</h1>
-        <p class="text-body-1 white--text">Total Member Trial</p>
-      </v-card>
-    </v-col>
-    <v-col xs="12" sm="12" md="6" lg="4" xl="2">
-      <v-card color="primary pa-6 ma-6">
-        <h1 class="text-medium white--text">12</h1>
-        <p class="text-body-1 white--text">Total member Premium</p>
-      </v-card>
-    </v-col>
-    <v-col xs="12" sm="12" md="6" lg="4" xl="2">
-      <v-card color="primary pa-6 ma-6">
-        <h1 class="text-medium white--text">12</h1>
-        <p class="text-body-1 white--text">Total Payment Confirmation</p>
-      </v-card>
-    </v-col>
-    <v-col xs="12" sm="12" md="6" lg="4" xl="2">
-      <v-card color="primary pa-6 ma-6">
-        <h1 class="text-medium white--text">12</h1>
-        <p class="text-body-1 white--text">Total member expired</p>
+      <v-card  class="ma-5 pa-5">
+        <div>
+          <p class="text-h6 ma-0 primary--text">TOTAL MEMBER EXPIRED</p>
+          <p class="text-body-1 mb-2">Jumlah member expired</p>
+          <h1 class="text-h3 ma-0 font-weight-bold">{{ loading ? 0 : homeTotal.expired_members }}</h1>
+        </div>
       </v-card>
     </v-col>
   </v-row>
@@ -57,7 +46,12 @@ export default {
   data() {
     return {
       loading: false,
-      total: null,
+      homeTotal: {
+        leasing: 0,
+        expired_members: 0,
+        premium_members: 0,
+        trial_members: 0,
+      },
     };
   },
   mounted() {
@@ -69,7 +63,7 @@ export default {
       this.$axios
         .get("home")
         .then((response) => {
-          this.total = response.data.data.leasing;
+          this.homeTotal = response.data.data;
           this.loading = false;
         })
         .catch((error) => {

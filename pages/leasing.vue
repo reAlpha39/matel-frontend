@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-row>
+    <v-row v-if="!isDetail">
       <v-col cols="2">
         <v-select
           v-model="limit"
@@ -14,17 +14,126 @@
       <v-col cols="10">
         <v-text-field
           v-model="search"
-          placeholder="Cari berdasarkan leasing, cabang atau nama debitur"
+          placeholder="Cari berdasarkan leasing, cabang, atau nomor polisi"
           outlined
           prepend-inner-icon="mdi-magnify"
           @input="debouncedFetchLeasing"
         ></v-text-field>
       </v-col>
     </v-row>
-    <div class="text-h6 mb-5">
-      Total Data: {{ total }}
-    </div>
+    <v-row v-else>
+      <v-col cols="12">
+        <v-card class="pa-5">
+          <div class="text-h6">Detail Leasing</div>
+          <div class="mb-5"></div>
+          <v-row>
+            <v-col>
+              <v-text-field
+                v-model="selectedLeasing.leasing"
+                label="Leasing"
+                readonly
+                outlined
+              ></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field
+                v-model="selectedLeasing.cabang"
+                label="Cabang"
+                readonly
+                outlined
+              ></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field
+                v-model="selectedLeasing.no_kontrak"
+                label="No. Kontrak"
+                readonly
+                outlined
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-text-field
+                v-model="selectedLeasing.nama_debitur"
+                label="Nama Debitur"
+                readonly
+                outlined
+              ></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field
+                v-model="selectedLeasing.nomor_polisi"
+                label="Nomor Polisi"
+                readonly
+                outlined
+              ></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field
+                v-model="selectedLeasing.sisa_hutang"
+                label="Sisa Hutang"
+                readonly
+                outlined
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-text-field
+                v-model="selectedLeasing.tipe"
+                label="Tipe"
+                readonly
+                outlined
+              ></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field
+                v-model="selectedLeasing.tahun"
+                label="Tahun"
+                readonly
+                outlined
+              ></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field
+                v-model="selectedLeasing.no_rangka"
+                label="No. Rangka"
+                readonly
+                outlined
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-text-field
+                v-model="selectedLeasing.no_mesin"
+                label="No. Mesin"
+                readonly
+                outlined
+              ></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field
+                v-model="selectedLeasing.pic"
+                label="PIC"
+                readonly
+                outlined
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" class="ma-5" dark @click="isDetail = false"
+              >Kembali</v-btn
+            >
+          </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
+    <div class="text-h6 mb-5" v-if="!isDetail">Total Data: {{ total }}</div>
     <v-data-table
+      v-if="!isDetail"
       :headers="headers"
       :items="numberedItems"
       :loading="loading"
@@ -36,9 +145,16 @@
       <template v-slot:item.sisa_hutang="{ item }">
         {{ formatCurrency(item.sisa_hutang) }}
       </template>
+      <template v-slot:item.actions="{ item }">
+        <v-btn color="primary" dark @click="viewDetail(item.id)">
+          Detail
+        </v-btn>
+        <v-btn color="red" dark @click="deleteItem(item.id)"> Hapus </v-btn>
+      </template>
     </v-data-table>
 
     <v-pagination
+      v-if="!isDetail"
       v-model="currentPage"
       :length="totalPages"
       @input="fetchLeasing"
@@ -74,6 +190,8 @@ export default {
         { text: "100", value: "100" },
       ],
       debouncedFetchLeasing: debounce(this.fetchLeasing, 300),
+      isDetail: false,
+      selectedLeasing: null,
     };
   },
   computed: {
@@ -85,6 +203,7 @@ export default {
         { text: "Nama Debitur", value: "nama_debitur" },
         { text: "No Polisi", value: "nomor_polisi" },
         { text: "Sisa Hutang", value: "sisa_hutang" },
+        { text: "Actions", value: "actions" },
       ];
     },
     numberedItems() {
@@ -129,7 +248,7 @@ export default {
           },
         })
         .then((response) => {
-          console.log(response.data)
+          console.log(response.data);
           this.items = response.data.data;
           this.totalPages = Math.ceil(response.data.data.total / this.limit);
         })
@@ -147,6 +266,12 @@ export default {
       });
       return formatter.format(value);
     },
+    viewDetail(itemId) {
+      this.selectedLeasing = this.items.find((item) => item.id === itemId);
+      this.isDetail = true;
+    },
+    editItem(itemId) {},
+    deleteItem(itemId) {},
   },
 };
 </script>
