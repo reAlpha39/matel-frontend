@@ -19,7 +19,7 @@
         <template v-slot:item.actions="{ item }">
           <v-btn
             color="primary"
-            height="26px"
+            height="27px"
             min-width="60px"
             @click="showLeasingDetail(item)"
           >
@@ -27,7 +27,7 @@
           </v-btn>
           <v-btn
             color="secondary"
-            height="26px"
+            height="27px"
             min-width="60px"
             @click="editItem(item)"
           >
@@ -35,7 +35,7 @@
           </v-btn>
           <v-btn
             color="red"
-            height="26px"
+            height="27px"
             min-width="60px"
             dark
             @click="confirmDelete(item)"
@@ -48,12 +48,19 @@
 
     <!-- Detail view -->
     <div v-else>
-      <v-row no-gutters>
-        <v-col>
+      <v-row>
+        <v-col cols="12" md="6">
           <v-card class="pa-5" height="27em">
-            <v-btn class="pa-0" icon @click="showDetail = false" color="primary"
-              >Kembali</v-btn
+            <v-btn
+              class="py-0"
+              outlined
+              @click="showDetail = false"
+              color="primary"
             >
+              <v-icon>mdi-arrow-left-thin</v-icon>
+              <div>Kembali</div>
+            </v-btn>
+            <div class="mb-2"></div>
             <div class="text-h6">Detail Leasing</div>
             <div class="mb-2"></div>
             <div class="text-body">Nama Leasing</div>
@@ -79,8 +86,7 @@
             ></v-text-field>
           </v-card>
         </v-col>
-        <div class="mx-2"></div>
-        <v-col>
+        <v-col cols="12" md="6">
           <LeasingMasterDetail :leasingId="selectedLeasing.id" />
         </v-col>
       </v-row>

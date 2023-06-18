@@ -44,22 +44,22 @@ export default {
   },
 
   axios: {
-    // baseURL: "https://taurusaplikasi.com/api/",
-    baseURL: "http://localhost:8080/",
+    baseURL: "https://taurusaplikasi.com/api/",
+    // baseURL: "http://localhost:8080/",
   },
 
   build: { transpile: ["defu"] },
 
-  modules: ["@nuxtjs/axios", "@nuxtjs/auth-next",],
+  modules: ["@nuxtjs/axios", "@nuxtjs/auth-next"],
 
   router: {
-    middleware: ['auth']
+    middleware: ["auth"],
   },
 
   serverMiddleware: [
     (req, res, next) => {
-      const userAgent = 'Frontend/1.0'; // User-Agent yang diinginkan
-      req.headers['user-agent'] = userAgent;
+      const userAgent = "Frontend/1.0"; // User-Agent yang diinginkan
+      req.headers["user-agent"] = userAgent;
       next();
     },
   ],
@@ -71,11 +71,11 @@ export default {
           property: "token",
           global: true,
           required: true,
-          type: 'Bearer'
+          type: "Bearer",
         },
         user: {
           property: false,
-          autoFetch: true
+          autoFetch: true,
         },
         endpoints: {
           login: { url: "login-web", method: "post", propertyName: "token" },
@@ -88,7 +88,7 @@ export default {
       login: "/login",
       logout: "/login",
       // home: "/",
-      home: false
+      home: false,
     },
   },
 };

@@ -3,7 +3,9 @@
     <div v-if="!isDetail">
       <div>Data Kendaraan {{ leasingName }}</div>
       <v-row class="pt-5 mx-1">
-        <v-btn height="40px" color="primary">Upload Data Kendaraan</v-btn>
+        <v-btn height="40px" color="primary" @click="showUploadModal = true"
+          >Upload Data Kendaraan</v-btn
+        >
         <div class="mx-2"></div>
         <v-btn height="40px" color="purple" dark @click="showModal = true"
           >Download Template</v-btn
@@ -142,36 +144,27 @@
     <div class="text-body-2 px-2 mb-2" v-if="!isDetail">
       Total Data: {{ total }}
     </div>
+
     <v-data-table
       v-if="!isDetail"
       :headers="headers"
-      :items="numberedItems"
+      :items="items"
+      :search="search"
+      :options.sync="options"
       :loading="loading"
-      :items-per-page="limit"
-      :page.sync="currentPage"
-      hide-default-footer
-      class="elevation-1"
     >
       <template v-slot:item.sisa_hutang="{ item }">
         {{ formatCurrency(item.sisa_hutang) }}
       </template>
       <template v-slot:item.actions="{ item }">
-        <v-btn color="primary" dark @click="viewDetail(item.id)">
+        <v-btn color="primary" height="27px" dark @click="viewDetail(item.id)">
           Detail
         </v-btn>
-        <v-btn color="red" dark @click="deleteItem(item.id)"> Hapus </v-btn>
+        <v-btn color="red" height="27px" dark @click="deleteItem(item.id)">
+          Hapus
+        </v-btn>
       </template>
     </v-data-table>
-
-    <v-pagination
-      v-if="!isDetail"
-      v-model="currentPage"
-      @input="fetchLeasing"
-      color="primary"
-      circle
-      class="my-5 custom-pagination"
-      :max="10"
-    ></v-pagination>
 
     <v-dialog v-model="showModal" max-width="500">
       <v-card class="pa-5">
@@ -195,6 +188,54 @@
         </v-row>
       </v-card>
     </v-dialog>
+
+    <v-dialog v-model="showUploadModal" max-width="500">
+      <v-card class="pa-5">
+        <div class="text-h6 purple--text text--darken-4">UPLOAD DATA</div>
+        <div class="py-1"></div>
+
+        <v-select
+          v-model="selectedUploadCabang"
+          :items="cabang"
+          item-text="nama_cabang"
+          item-value="id"
+          solo
+          dense
+          placeholder="Pilih Cabang"
+        ></v-select>
+
+        <v-file-input
+          v-model="file"
+          multiple
+          dense
+          placeholder="Pilih File"
+          solo
+          prepend-icon
+          @change="handleFileChange"
+        ></v-file-input>
+        <v-row>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="red white--text"
+            height="32"
+            @click="showUploadModal = false"
+          >
+            Batal
+          </v-btn>
+          <div class="mx-2"></div>
+          <v-btn
+            color="primary white--text"
+            height="32"
+            :disabled="isLoading || success || file === null"
+            :loading="isLoading"
+            @click="uploadFile"
+          >
+            Simpan
+          </v-btn>
+        </v-row>
+        <div class="py-2"></div>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -216,6 +257,8 @@ export default {
         page: 1,
         itemsPerPage: 100,
       },
+      limit: 5,
+      options: {},
       totalPages: 10,
       total: 10,
       search: "",
@@ -226,7 +269,15 @@ export default {
       selectedLeasing: null,
       selectedCabang: null,
       selectedDownloadCabang: null,
+      selectedUploadCabang: null,
       showModal: false,
+      showUploadModal: false,
+      isLoading: false,
+      success: false,
+      error: null,
+      file: null,
+      formData: null,
+      time: null,
     };
   },
   computed: {
@@ -261,9 +312,9 @@ export default {
         .get("cabang", {
           params: {
             leasing_id: this.leasingId,
-            search: "",
-            page: 0,
-            limit: 0,
+            search: this.search,
+            page: this.options.page,
+            limit: this.limit,
           },
         })
         .then((response) => {
@@ -298,9 +349,10 @@ export default {
         .get("kendaraan", {
           params: {
             leasing: this.leasingName,
-            page: 0,
+            search: this.search,
+            page: this.options.page,
+            limit: this.limit,
             cabang: this.cabangName,
-            limit: 0,
           },
         })
         .then((response) => {
@@ -313,6 +365,48 @@ export default {
         .finally(() => {
           this.loading = false;
         });
+    },
+    handleFileChange() {
+      this.formData = new FormData();
+
+      if (this.file) {
+        this.formData.append("file", this.file[0]);
+      }
+      this.formData.append("leasing_name", this.leasingName);
+    },
+    uploadFile() {
+      if (this.formData) {
+        const cabangFiltered = this.cabang.filter(
+          (item) => item.id === this.selectedUploadCabang
+        );
+        const cabangName = cabangFiltered[0].nama_cabang;
+        this.formData.append("cabang_name", cabangName);
+        this.success = false;
+        this.error = false;
+        this.isLoading = true;
+        this.$axios
+          .post("upload-leasing", this.formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((response) => {
+            this.formData = null;
+            this.formData = null;
+            this.success = true;
+            this.isLoading = false;
+            this.time = response.data.data;
+            this.showUploadModal = false;
+            this.selectedUploadCabang = null;
+            this.file = null;
+            this.fetchLeasing();
+          })
+          .catch((error) => {
+            this.isLoading = false;
+            this.error = error;
+            console.log(error);
+          });
+      }
     },
     formatCurrency(value) {
       const formatter = new Intl.NumberFormat("id-ID", {

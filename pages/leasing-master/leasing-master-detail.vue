@@ -42,7 +42,7 @@
         <template v-slot:item.actions="{ item }">
           <v-btn
             color="secondary"
-            height="26px"
+            height="27px"
             min-width="60px"
             @click="editItem(item)"
           >
@@ -50,7 +50,7 @@
           </v-btn>
           <v-btn
             color="red"
-            height="26px"
+            height="27px"
             min-width="60px"
             dark
             @click="confirmDelete(item)"
