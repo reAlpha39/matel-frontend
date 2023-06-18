@@ -1,29 +1,29 @@
 <template>
   <v-container fluid>
-    <v-row v-if="!isDetail">
-      <v-col cols="2">
-        <v-select
-          v-model="limit"
-          :items="filterOptions"
-          :disabled="loading"
-          outlined
-          placeholder="Menampilkan (Default 100)"
-          @change="setLimit(limit)"
-        ></v-select>
-      </v-col>
-      <v-col cols="10">
-        <v-text-field
-          v-model="search"
-          placeholder="Cari berdasarkan leasing, cabang, atau nomor polisi"
-          outlined
-          prepend-inner-icon="mdi-magnify"
-          @input="debouncedFetchLeasing"
-        ></v-text-field>
-      </v-col>
-    </v-row>
-    <v-row v-else>
-      <v-col cols="12">
-        <v-card class="pa-5">
+    <v-card>
+      <v-row v-if="!isDetail" class="pa-5">
+        <v-col cols="2">
+          <v-select
+            v-model="limit"
+            :items="filterOptions"
+            :disabled="loading"
+            outlined
+            placeholder="Menampilkan (Default 100)"
+            @change="setLimit(limit)"
+          ></v-select>
+        </v-col>
+        <v-col cols="10">
+          <v-text-field
+            v-model="search"
+            placeholder="Cari berdasarkan leasing, cabang, atau nomor polisi"
+            outlined
+            prepend-inner-icon="mdi-magnify"
+            @input="debouncedFetchLeasing"
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row v-else class="pa-5">
+        <v-col cols="12">
           <div class="text-h6">Detail Leasing</div>
           <div class="mb-5"></div>
           <v-row>
@@ -128,41 +128,41 @@
               >Kembali</v-btn
             >
           </v-row>
-        </v-card>
-      </v-col>
-    </v-row>
-    <div class="text-h6 mb-5" v-if="!isDetail">Total Data: {{ total }}</div>
-    <v-data-table
-      v-if="!isDetail"
-      :headers="headers"
-      :items="numberedItems"
-      :loading="loading"
-      :items-per-page="limit"
-      :page.sync="currentPage"
-      hide-default-footer
-      class="elevation-1"
-    >
-      <template v-slot:item.sisa_hutang="{ item }">
-        {{ formatCurrency(item.sisa_hutang) }}
-      </template>
-      <template v-slot:item.actions="{ item }">
-        <v-btn color="primary" dark @click="viewDetail(item.id)">
-          Detail
-        </v-btn>
-        <v-btn color="red" dark @click="deleteItem(item.id)"> Hapus </v-btn>
-      </template>
-    </v-data-table>
+        </v-col>
+      </v-row>
+      <div class="text-h6 px-5" v-if="!isDetail">Total Data: {{ total }}</div>
+      <v-data-table
+        v-if="!isDetail"
+        :headers="headers"
+        :items="numberedItems"
+        :loading="loading"
+        :items-per-page="limit"
+        :page.sync="currentPage"
+        hide-default-footer
+        class="elevation-1"
+      >
+        <template v-slot:item.sisa_hutang="{ item }">
+          {{ formatCurrency(item.sisa_hutang) }}
+        </template>
+        <template v-slot:item.actions="{ item }">
+          <v-btn color="primary" dark @click="viewDetail(item.id)">
+            Detail
+          </v-btn>
+          <v-btn color="red" dark @click="deleteItem(item.id)"> Hapus </v-btn>
+        </template>
+      </v-data-table>
 
-    <v-pagination
-      v-if="!isDetail"
-      v-model="currentPage"
-      :length="totalPages"
-      @input="fetchLeasing"
-      color="primary"
-      circle
-      class="my-5 custom-pagination"
-      :max="10"
-    ></v-pagination>
+      <v-pagination
+        v-if="!isDetail"
+        v-model="currentPage"
+        :length="totalPages"
+        @input="fetchLeasing"
+        color="primary"
+        circle
+        class="my-5 custom-pagination"
+        :max="10"
+      ></v-pagination>
+    </v-card>
   </v-container>
 </template>
 
@@ -170,6 +170,10 @@
 import { debounce } from "lodash";
 
 export default {
+  props: {
+    leasingName: "",
+    cabangName: "",
+  },
   data() {
     return {
       items: [],
@@ -242,7 +246,7 @@ export default {
     fetchLeasing() {
       this.loading = true;
       this.$axios
-        .get("leasing", {
+        .get("kendaraan", {
           params: {
             search: this.search,
           },

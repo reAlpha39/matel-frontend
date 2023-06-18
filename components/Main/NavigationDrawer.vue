@@ -1,19 +1,17 @@
 <template>
   <div>
-    <v-navigation-drawer v-model="drawer" fixed app>
-      <div class="text-h4 py-3 px-6 font-weight-700">Matel</div>
-      <v-list>
-        <div
-          class="text-h6 py-3 px-6 font-weight-700 purple--text text--darken-4"
-        >
-          DASHBOARD
-        </div>
+    <v-navigation-drawer v-model="drawer" color="primary" dark app>
+      <div class="text-h4 font-weight-bold white--text py-5 px-6">Matel</div>
+      <v-list color="transparent" density="compact" nav>
         <v-list-item
           v-for="(item, i) in dashboardItem"
           :key="i"
           :to="item.to"
           router
           exact
+          :active="activeIndex === i"
+          :exact-active-class="exactActiveClass"
+          @click="selectItem(i)"
         >
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
@@ -23,40 +21,26 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-      <v-list>
-        <div
-          class="text-h6 py-3 px-6 font-weight-700 purple--text text--darken-4"
-        >
-          CONTENT MANAGEMENT
+      <v-spacer></v-spacer>
+      <template v-slot:append>
+        <div class="pa-2">
+          <v-btn block text dark @click="logout"> Logout </v-btn>
         </div>
-        <v-list-item
-          v-for="(item, i) in contentManagementItem"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-        >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
+      </template>
     </v-navigation-drawer>
     <v-app-bar fixed app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-spacer></v-spacer>
-      <div class="mr-5">
-        Selamat datang, {{ $auth.user.data.username }}
-      </div>
-      <v-btn @click="logout">
-        Logout
-      </v-btn>
+      <div class="mr-5">Selamat datang, {{ $auth.user.data.username }}</div>
     </v-app-bar>
   </div>
 </template>
+
+<style>
+.exact-active-item {
+  background-color: rgba(255, 254, 254, 0.051);
+}
+</style>
 
 <script>
 export default {
@@ -71,28 +55,30 @@ export default {
           to: "/",
         },
         {
-          icon: "mdi-account-outline",
-          title: "Member",
-          to: "/member",
-        },
-        {
           icon: "mdi-file-upload-outline",
           title: "Upload Data",
           to: "/upload-data",
         },
         {
+          icon: "mdi-car",
+          title: "Data Semua Kendaraan",
+          to: "/data-kendaraan",
+        },
+        {
           icon: "mdi-account-multiple-outline",
           title: "Leasing",
-          to: "/leasing",
+          to: "/leasing-master",
         },
-
+        {
+          icon: "mdi-account-outline",
+          title: "Member",
+          to: "/member",
+        },
         {
           icon: "mdi-map-marker-outline",
           title: "Wilayah",
           to: "/wilayah",
         },
-      ],
-      contentManagementItem: [
         {
           icon: "mdi-bank-outline",
           title: "Info Pembayaran",
@@ -111,13 +97,18 @@ export default {
       ],
       right: true,
       rightDrawer: false,
+      exactActiveClass: "exact-active-item",
+      activeIndex: null,
     };
   },
-  methods:{
+  methods: {
     async logout() {
-      await this.$auth.logout()
+      await this.$auth.logout();
       this.$router.push("/login");
-    }
-  }
+    },
+    selectItem(index) {
+      this.activeIndex = index;
+    },
+  },
 };
 </script>

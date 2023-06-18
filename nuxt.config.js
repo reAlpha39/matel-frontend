@@ -30,8 +30,8 @@ export default {
       dark: false,
       themes: {
         light: {
-          primary: colors.purple.darken4,
-          background: "#E9E4ED",
+          primary: "#00576F",
+          background: "#F5F5F5",
           accent: colors.grey.darken3,
           secondary: colors.amber.darken3,
           info: colors.teal.lighten1,
@@ -44,8 +44,8 @@ export default {
   },
 
   axios: {
-    // baseURL: "http://localhost:8080/",
-    baseURL: "https://taurusaplikasi.com/api/",
+    // baseURL: "https://taurusaplikasi.com/api/",
+    baseURL: "http://localhost:8080/",
   },
 
   build: { transpile: ["defu"] },

@@ -82,18 +82,17 @@ export default {
           data: this.login,
         });
         this.loading = false;
-        console.log(this.$auth.user.data)
         if (this.$auth.loggedIn) {
-          if (this.$auth.user.data.is_admin === 1) {
-            this.$router.push("/");
-          } else {
-            this.loading = false;
-            this.isError = true;
-            this.errorMessage = "Anda bukan admin";
-          }
+          // if (this.$auth.user.data.is_admin === 1) {
+          this.$router.push("/");
+          // } else {
+          //   this.loading = false;
+          //   this.isError = true;
+          //   this.errorMessage = "Anda bukan admin";
+          // }
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
         this.loading = false;
         this.isError = true;
         this.errorMessage = error;
