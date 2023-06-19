@@ -169,6 +169,7 @@
     <v-dialog v-model="showModal" max-width="500">
       <v-card class="pa-5">
         <div class="text-h6">Download Template</div>
+
         <div class="mb-5"></div>
         <v-select
           v-model="selectedDownloadCabang"
@@ -192,6 +193,15 @@
     <v-dialog v-model="showUploadModal" max-width="500">
       <v-card class="pa-5">
         <div class="text-h6 purple--text text--darken-4">UPLOAD DATA</div>
+        <div class="py-1"></div>
+
+        <v-alert v-show="isError === true" type="error">
+          <div>
+            <div class="text-subtitle-1 text--black">
+              {{ error }}
+            </div>
+          </div>
+        </v-alert>
         <div class="py-1"></div>
 
         <v-select
@@ -274,6 +284,7 @@ export default {
       showUploadModal: false,
       isLoading: false,
       success: false,
+      isError: false,
       error: null,
       file: null,
       formData: null,
@@ -360,7 +371,7 @@ export default {
           this.totalPages = Math.ceil(response.data.data.total / this.limit);
         })
         .catch((error) => {
-          console.error(error);
+          console.log(error);
         })
         .finally(() => {
           this.loading = false;
@@ -382,7 +393,7 @@ export default {
         const cabangName = cabangFiltered[0].nama_cabang;
         this.formData.append("cabang_name", cabangName);
         this.success = false;
-        this.error = false;
+        this.isError = false;
         this.isLoading = true;
         this.$axios
           .post("upload-leasing", this.formData, {
@@ -402,11 +413,35 @@ export default {
             this.fetchLeasing();
           })
           .catch((error) => {
+            this.showUploadModal = false;
+            this.isError = true;
             this.isLoading = false;
-            this.error = error;
-            console.log(error);
+            this.error = error.message;
+            console.log("Error");
           });
       }
+    },
+    downloadTemplate() {
+      const endpoint = "/download-template";
+      const url = this.$axios.defaults.baseURL + endpoint;
+
+      this.$axios
+        .get("download-template")
+        .then((response) => {
+          const downloadLink = document.createElement("a");
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const filename = "leasing-template.csv";
+          downloadLink.href = url;
+          downloadLink.setAttribute("download", filename);
+          document.body.appendChild(downloadLink);
+          downloadLink.click();
+          document.body.removeChild(downloadLink);
+          window.URL.revokeObjectURL(url);
+          this.showModal = false;
+        })
+        .catch((error) => {
+          console.error("Failed to download file:", error);
+        });
     },
     formatCurrency(value) {
       const formatter = new Intl.NumberFormat("id-ID", {
@@ -429,11 +464,6 @@ export default {
     },
     editItem(itemId) {},
     deleteItem(itemId) {},
-    downloadTemplate() {
-      this.fileUrl = "http://example.com/template.xlsx";
-      this.$refs.downloadLink.click();
-      this.showModal = false;
-    },
     showDownloadModal() {
       this.showModal = !this.showModal;
       this.selectedDownloadCabang = null;
