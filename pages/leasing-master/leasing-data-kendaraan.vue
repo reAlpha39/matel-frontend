@@ -3,14 +3,23 @@
     <div v-if="!isDetail">
       <div>Data Kendaraan {{ leasingName }}</div>
       <v-row class="pt-5 mx-1">
-        <v-btn height="40px" color="primary" @click="showUploadModal = true"
+        <v-btn
+          v-if="cabang.length > 0"
+          height="40px"
+          color="primary"
+          @click="showUploadModal = true"
           >Upload Data Kendaraan</v-btn
         >
-        <div class="mx-2"></div>
-        <v-btn height="40px" color="purple" dark @click="showModal = true"
+        <div v-if="cabang.length > 0" class="mx-2"></div>
+        <v-btn
+          v-if="cabang.length > 0"
+          height="40px"
+          color="purple"
+          dark
+          @click="showModal = true"
           >Download Template</v-btn
         >
-        <div class="mx-2"></div>
+        <div v-if="cabang.length > 0" class="mx-2"></div>
         <v-select
           v-model="selectedCabang"
           :items="cabang"
@@ -141,8 +150,22 @@
         </v-row>
       </v-col>
     </v-row>
-    <div class="text-body-2 px-2 mb-2" v-if="!isDetail">
+    <!-- <div class="text-body-2 px-2 mb-2" v-if="!isDetail">
       Total Data: {{ total }}
+    </div> -->
+
+    <div>
+      <v-alert
+        v-if="cabang.length === 0"
+        v-model="alert"
+        tonal
+        close-label="Close Alert"
+        color="warning"
+        dark
+        title="Closable Alert"
+      >
+        Tambah cabang sebelum upload
+      </v-alert>
     </div>
 
     <v-data-table
