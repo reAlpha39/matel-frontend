@@ -336,10 +336,19 @@ export default {
       }));
     },
   },
+
   mounted() {
     this.fetchLeasing();
     this.fetchCabang();
     this.fetchLeasingTotal();
+    this.$store.watch(
+      (state) => state.myString,
+      (newString) => {
+        if (newString === "Cabang Added") {
+          this.fetchCabang();
+        }
+      }
+    );
   },
   methods: {
     fetchCabang() {

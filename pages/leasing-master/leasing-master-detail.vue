@@ -177,6 +177,19 @@ export default {
       nameRules: [(v) => !!v || "Wajib diisi"],
     };
   },
+  computed: {
+    inputValue: {
+      get() {
+        return this.$store.state.myString;
+      },
+      set(value) {
+        this.$store.dispatch("updateString", value);
+      },
+    },
+    storedString() {
+      return this.$store.state.myString;
+    },
+  },
   methods: {
     fetchData() {
       this.loading = true;
@@ -201,6 +214,7 @@ export default {
         });
     },
     createLeasing() {
+      this.$store.dispatch("updateString", "");
       if (this.$refs.createForm.validate()) {
         this.$axios
           .post("cabang", this.newLeasing)
@@ -208,8 +222,10 @@ export default {
             this.$refs.createForm.reset();
             this.fetchData();
             this.newLeasing = {
+              leasing_id: this.leasingId,
               nama_cabang: "",
             };
+            this.$store.dispatch("updateString", "Cabang Added");
             this.createDialog = false;
           })
           .catch((error) => {
