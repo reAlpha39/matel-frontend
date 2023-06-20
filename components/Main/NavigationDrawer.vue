@@ -54,11 +54,11 @@ export default {
           title: "Home",
           to: "/",
         },
-        {
-          icon: "mdi-file-upload-outline",
-          title: "Upload Data",
-          to: "/upload-data",
-        },
+        // {
+        //   icon: "mdi-file-upload-outline",
+        //   title: "Upload Data",
+        //   to: "/upload-data",
+        // },
         {
           icon: "mdi-car",
           title: "Data Semua Kendaraan",
