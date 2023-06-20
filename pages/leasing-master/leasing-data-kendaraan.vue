@@ -42,114 +42,116 @@
         ></v-text-field>
       </v-row>
     </div>
-    <v-row v-else class="pa-5">
-      <v-col cols="12">
-        <div class="text-h6">Detail Leasing</div>
-        <div class="mb-5"></div>
-        <v-row>
-          <v-col>
-            <v-text-field
-              v-model="selectedLeasing.leasing"
-              label="Leasing"
-              readonly
-              outlined
-            ></v-text-field>
-          </v-col>
-          <v-col>
-            <v-text-field
-              v-model="selectedLeasing.cabang"
-              label="Cabang"
-              readonly
-              outlined
-            ></v-text-field>
-          </v-col>
-          <v-col>
-            <v-text-field
-              v-model="selectedLeasing.no_kontrak"
-              label="No. Kontrak"
-              readonly
-              outlined
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <v-text-field
-              v-model="selectedLeasing.nama_debitur"
-              label="Nama Debitur"
-              readonly
-              outlined
-            ></v-text-field>
-          </v-col>
-          <v-col>
-            <v-text-field
-              v-model="selectedLeasing.nomor_polisi"
-              label="Nomor Polisi"
-              readonly
-              outlined
-            ></v-text-field>
-          </v-col>
-          <v-col>
-            <v-text-field
-              v-model="selectedLeasing.sisa_hutang"
-              label="Sisa Hutang"
-              readonly
-              outlined
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <v-text-field
-              v-model="selectedLeasing.tipe"
-              label="Tipe"
-              readonly
-              outlined
-            ></v-text-field>
-          </v-col>
-          <v-col>
-            <v-text-field
-              v-model="selectedLeasing.tahun"
-              label="Tahun"
-              readonly
-              outlined
-            ></v-text-field>
-          </v-col>
-          <v-col>
-            <v-text-field
-              v-model="selectedLeasing.no_rangka"
-              label="No. Rangka"
-              readonly
-              outlined
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <v-text-field
-              v-model="selectedLeasing.no_mesin"
-              label="No. Mesin"
-              readonly
-              outlined
-            ></v-text-field>
-          </v-col>
-          <v-col>
-            <v-text-field
-              v-model="selectedLeasing.pic"
-              label="PIC"
-              readonly
-              outlined
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" class="ma-5" dark @click="isDetail = false"
-            >Kembali</v-btn
-          >
-        </v-row>
-      </v-col>
-    </v-row>
+    <v-card v-else>
+      <v-row class="pa-5">
+        <v-col cols="12">
+          <div class="text-h6">Detail Leasing</div>
+          <div class="mb-5"></div>
+          <v-row>
+            <v-col>
+              <v-text-field
+                v-model="selectedLeasing.leasing"
+                label="Leasing"
+                readonly
+                outlined
+              ></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field
+                v-model="selectedLeasing.cabang"
+                label="Cabang"
+                readonly
+                outlined
+              ></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field
+                v-model="selectedLeasing.no_kontrak"
+                label="No. Kontrak"
+                readonly
+                outlined
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-text-field
+                v-model="selectedLeasing.nama_debitur"
+                label="Nama Debitur"
+                readonly
+                outlined
+              ></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field
+                v-model="selectedLeasing.nomor_polisi"
+                label="Nomor Polisi"
+                readonly
+                outlined
+              ></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field
+                v-model="selectedLeasing.sisa_hutang"
+                label="Sisa Hutang"
+                readonly
+                outlined
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-text-field
+                v-model="selectedLeasing.tipe"
+                label="Tipe"
+                readonly
+                outlined
+              ></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field
+                v-model="selectedLeasing.tahun"
+                label="Tahun"
+                readonly
+                outlined
+              ></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field
+                v-model="selectedLeasing.no_rangka"
+                label="No. Rangka"
+                readonly
+                outlined
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-text-field
+                v-model="selectedLeasing.no_mesin"
+                label="No. Mesin"
+                readonly
+                outlined
+              ></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field
+                v-model="selectedLeasing.pic"
+                label="PIC"
+                readonly
+                outlined
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" class="ma-5" dark @click="isDetail = false"
+              >Kembali</v-btn
+            >
+          </v-row>
+        </v-col>
+      </v-row>
+    </v-card>
     <!-- <div class="text-body-2 px-2 mb-2" v-if="!isDetail">
       Total Data: {{ total }}
     </div> -->
