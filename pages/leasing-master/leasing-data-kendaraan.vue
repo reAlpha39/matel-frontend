@@ -287,13 +287,13 @@
 
         <div class="mb-5"></div>
         <v-file-input
-        v-model="file"
-        multiple
-        dense
-        placeholder="Pilih File"
-        solo
-        prepend-icon
-        @change="handleFileChange"
+          v-model="file"
+          multiple
+          dense
+          placeholder="Pilih File"
+          solo
+          prepend-icon
+          @change="handleFileChange"
         ></v-file-input>
         <div class="mb-2"></div>
         <v-select
@@ -314,8 +314,6 @@
         </v-row>
       </v-card>
     </v-dialog>
-
-   
   </div>
 </template>
 
@@ -526,9 +524,11 @@ export default {
     },
     deleteKendaraan() {
       this.loading = true;
+
       this.$axios
         .delete("delete-kendaraan", {
           params: {
+            leasing_id: this.leasingId,
             leasing: this.leasingName,
             cabang: this.selectedGantikanDataCabang,
           },
@@ -537,37 +537,32 @@ export default {
           if (this.formData) {
             const cabangFiltered = this.cabang.filter(
               (item) => item.nama_cabang === this.selectedGantikanDataCabang
-              );
-              const cabangName = cabangFiltered[0].nama_cabang;
-              this.formData.append("cabang_name", cabangName);
-              this.success = false;
-              this.isError = false;
-              this.isLoading = true;
-              this.$axios
+            );
+            const cabangName = cabangFiltered[0].nama_cabang;
+            this.formData.append("cabang_name", cabangName);
+            this.success = false;
+            this.isError = false;
+            this.isLoading = true;
+            this.$axios
               .post("upload-leasing", this.formData, {
                 headers: {
                   "Content-Type": "multipart/form-data",
                 },
               })
               .then((response) => {
-                this.formData = null;
-                this.formData = null;
-                this.success = true;
-                this.isLoading = false;
-                this.time = response.data.data;
+                console.log("SUCCESS");
                 this.showGantikanData = false;
-                this.selectedGantikanDataCabang = null;
-                this.file = null;
+                this.getLeasing();
+              })
+              .catch((error) => {
+                this.showGantikanData = false;
+                this.isError = true;
+                this.isLoading = false;
+                this.error = error.message;
+                console.log("Error");
                 this.fetchLeasing();
-          })
-          .catch((error) => {
-            this.showUploadModal = false;
-            this.isError = true;
-            this.isLoading = false;
-            this.error = error.message;
-            console.log("Error");
-          });
-      }
+              });
+          }
         })
         .catch((error) => {
           console.log(error);
