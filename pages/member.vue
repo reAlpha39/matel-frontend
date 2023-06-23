@@ -12,11 +12,7 @@
       </v-col>
     </v-row>
 
-    <v-data-table
-      :headers="headers"
-      :items="filteredUsers"
-      :search="search"
-    >
+    <v-data-table :headers="headers" :items="users">
       <template v-slot:item.status="{ item }">
         {{ getStatusText(item.status) }}
       </template>
@@ -25,11 +21,9 @@
           Detail
         </v-btn>
         <v-btn color="primary" outlined dark @click="openEditModal(item)">
-          Ubah Status
+          Ubah Subscription
         </v-btn>
-        <v-btn color="red" dark @click="openConfirmModal(item)">
-          Hapus
-        </v-btn>
+        <v-btn color="red" dark @click="openConfirmModal(item)"> Hapus </v-btn>
       </template>
     </v-data-table>
 
@@ -68,7 +62,7 @@
     <v-dialog v-model="isEditModalOpen" max-width="500px">
       <v-card>
         <v-card-title>
-          <span class="headline">Ubah Status Pengguna</span>
+          <span class="headline">Ubah Subscription Pengguna</span>
         </v-card-title>
         <v-card-text>
           <v-text-field
@@ -78,9 +72,9 @@
             outlined
           ></v-text-field>
           <v-select
-            v-model="editUserStatus"
-            :items="statusOptions"
-            label="Status"
+            v-model="editUserSubscription"
+            :items="subscriptionOptions"
+            label="Subscription"
             outlined
           ></v-select>
         </v-card-text>
@@ -102,7 +96,9 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" dark @click="deleteUser(selectedUser)">Ya</v-btn>
+          <v-btn color="primary" dark @click="deleteUser(selectedUser)"
+            >Ya</v-btn
+          >
           <v-btn color="red" dark @click="closeConfirmModal">Tidak</v-btn>
         </v-card-actions>
       </v-card>
@@ -115,43 +111,42 @@ export default {
   data() {
     return {
       users: [],
-      search: '',
+      search: "",
       isDetailModalOpen: false,
       isEditModalOpen: false,
       isConfirmModalOpen: false,
       selectedUser: {
-        username: '',
-        email: '',
-        status: 0
+        id: 0,
+        username: "",
+        status: 0,
       },
-      editUserStatus: '0',
+      editUserSubscription: 1,
       headers: [
-        { text: 'ID', value: 'id' },
-        { text: 'Nama', value: 'username' },
-        { text: 'Email', value: 'email' },
-        { text: 'Status', value: 'status' },
-        { text: 'Actions', value: 'actions', sortable: false },
+        { text: "ID", value: "id" },
+        { text: "Nama", value: "username" },
+        { text: "Email", value: "email" },
+        { text: "Status", value: "status" },
+        { text: "Actions", value: "actions", sortable: false },
       ],
-      statusOptions: [
-        { text: 'Trial', value: '0' },
-        { text: 'Premium', value: '1' },
-        { text: 'Expired', value: '2' },
+      subscriptionOptions: [
+        { text: "1 Bulan", value: "1" },
+        { text: "3 Bulan", value: "3" },
+        { text: "6 Bulan", value: "6" },
+        { text: "12 Bulan", value: "12" },
       ],
     };
   },
-  computed: {
-    filteredUsers() {
-      return this.users.filter((user) =>
-        user.username.toLowerCase().includes(this.search.toLowerCase())
-      );
-    },
-  },
+  computed: {},
   methods: {
     fetchUser() {
       this.$axios
-        .get('member')
+        .get("member")
         .then((response) => {
-          this.users = response.data.data;
+          if (response.data.data === null) {
+            this.users = [];
+          } else {
+            this.users = response.data.data;
+          }
         })
         .catch((error) => {
           console.error(error);
@@ -166,12 +161,10 @@ export default {
     },
     openEditModal(user) {
       this.selectedUser = user;
-      this.editUserStatus = user.status.toString();
       this.isEditModalOpen = true;
     },
     closeEditModal() {
       this.isEditModalOpen = false;
-      this.editUserStatus = '0';
     },
     openConfirmModal(user) {
       this.selectedUser = user;
@@ -191,18 +184,32 @@ export default {
     getStatusText(status) {
       switch (status) {
         case 0:
-          return 'Trial';
+          return "Trial";
         case 1:
-          return 'Premium';
+          return "Premium";
         case 2:
-          return 'Expired';
+          return "Expired";
         default:
-          return '';
+          return "";
       }
     },
     saveUserChanges() {
-      this.selectedUser.status = parseInt(this.editUserStatus);
-      this.closeEditModal();
+      const params = {
+        user_id: this.selectedUser.id,
+        subscription_month: this.editUserSubscription,
+      };
+
+      console.log(params)
+
+      this.$axios
+        .post('update-member', params)
+        .then((response) => {
+          console.log(response);
+          this.closeEditModal();
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     },
   },
   mounted() {

@@ -20,6 +20,15 @@
           >Download Template</v-btn
         >
         <div v-if="cabang.length > 0" class="mx-2"></div>
+        <v-btn
+          v-if="cabang.length > 0"
+          height="40px"
+          color="red"
+          dark
+          @click="showGantikanData = true"
+          >Gantikan Data</v-btn
+        >
+        <div v-if="cabang.length > 0" class="mx-2"></div>
         <v-select
           v-model="selectedCabang"
           :items="cabang"
@@ -191,30 +200,6 @@
       </template>
     </v-data-table>
 
-    <v-dialog v-model="showModal" max-width="500">
-      <v-card class="pa-5">
-        <div class="text-h6">Download Template</div>
-
-        <div class="mb-5"></div>
-        <v-select
-          v-model="selectedDownloadCabang"
-          :items="cabang"
-          item-text="nama_cabang"
-          item-value="id"
-          solo
-          dense
-          placeholder="Pilih Cabang"
-        ></v-select>
-        <div class="mb-5"></div>
-        <v-row>
-          <v-spacer></v-spacer>
-          <v-btn color="red" dark @click="showDownloadModal">Batal</v-btn>
-          <div class="mx-2"></div>
-          <v-btn color="primary" @click="downloadTemplate">Download</v-btn>
-        </v-row>
-      </v-card>
-    </v-dialog>
-
     <v-dialog v-model="showUploadModal" max-width="500">
       <v-card class="pa-5">
         <div class="text-h6 purple--text text--darken-4">UPLOAD DATA</div>
@@ -271,6 +256,66 @@
         <div class="py-2"></div>
       </v-card>
     </v-dialog>
+
+    <v-dialog v-model="showModal" max-width="500">
+      <v-card class="pa-5">
+        <div class="text-h6">Download Template</div>
+
+        <div class="mb-5"></div>
+        <v-select
+          v-model="selectedDownloadCabang"
+          :items="cabang"
+          item-text="nama_cabang"
+          item-value="id"
+          solo
+          dense
+          placeholder="Pilih Cabang"
+        ></v-select>
+        <div class="mb-5"></div>
+        <v-row>
+          <v-spacer></v-spacer>
+          <v-btn color="red" dark @click="showDownloadModal">Batal</v-btn>
+          <div class="mx-2"></div>
+          <v-btn color="primary" @click="downloadTemplate">Download</v-btn>
+        </v-row>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="showGantikanData" max-width="500">
+      <v-card class="pa-5">
+        <div class="text-h6">Gantikan Data</div>
+
+        <div class="mb-5"></div>
+        <v-file-input
+        v-model="file"
+        multiple
+        dense
+        placeholder="Pilih File"
+        solo
+        prepend-icon
+        @change="handleFileChange"
+        ></v-file-input>
+        <div class="mb-2"></div>
+        <v-select
+          v-model="selectedGantikanDataCabang"
+          :items="cabang"
+          item-text="nama_cabang"
+          item-value="nama_cabang"
+          solo
+          dense
+          placeholder="Pilih Cabang"
+        ></v-select>
+        <div class="mb-5"></div>
+        <v-row>
+          <v-spacer></v-spacer>
+          <v-btn color="red" dark @click="showGantikanDataModal">Batal</v-btn>
+          <div class="mx-2"></div>
+          <v-btn color="primary" @click="deleteKendaraan">Gantikan Data</v-btn>
+        </v-row>
+      </v-card>
+    </v-dialog>
+
+   
   </div>
 </template>
 
@@ -304,8 +349,10 @@ export default {
       selectedLeasing: null,
       selectedCabang: null,
       selectedDownloadCabang: null,
+      selectedGantikanDataCabang: null,
       selectedUploadCabang: null,
       showModal: false,
+      showGantikanData: false,
       showUploadModal: false,
       isLoading: false,
       success: false,
@@ -477,6 +524,58 @@ export default {
           console.error("Failed to download file:", error);
         });
     },
+    deleteKendaraan() {
+      this.loading = true;
+      this.$axios
+        .delete("delete-kendaraan", {
+          params: {
+            leasing: this.leasingName,
+            cabang: this.selectedGantikanDataCabang,
+          },
+        })
+        .then((response) => {
+          if (this.formData) {
+            const cabangFiltered = this.cabang.filter(
+              (item) => item.nama_cabang === this.selectedGantikanDataCabang
+              );
+              const cabangName = cabangFiltered[0].nama_cabang;
+              this.formData.append("cabang_name", cabangName);
+              this.success = false;
+              this.isError = false;
+              this.isLoading = true;
+              this.$axios
+              .post("upload-leasing", this.formData, {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              })
+              .then((response) => {
+                this.formData = null;
+                this.formData = null;
+                this.success = true;
+                this.isLoading = false;
+                this.time = response.data.data;
+                this.showGantikanData = false;
+                this.selectedGantikanDataCabang = null;
+                this.file = null;
+                this.fetchLeasing();
+          })
+          .catch((error) => {
+            this.showUploadModal = false;
+            this.isError = true;
+            this.isLoading = false;
+            this.error = error.message;
+            console.log("Error");
+          });
+      }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
     formatCurrency(value) {
       const formatter = new Intl.NumberFormat("id-ID", {
         style: "currency",
@@ -501,6 +600,10 @@ export default {
     showDownloadModal() {
       this.showModal = !this.showModal;
       this.selectedDownloadCabang = null;
+    },
+    showGantikanDataModal() {
+      this.gantikanData = !this.gantikanData;
+      this.selectedGantikanDataCabang = null;
     },
   },
 };
