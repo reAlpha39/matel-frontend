@@ -3,6 +3,7 @@
     <div v-if="!isDetail">
       <div>Data Kendaraan</div>
       <v-row class="pt-5 mx-1">
+        
         <v-btn height="40px" color="primary" @click="showUploadModal = true"
           >Upload Data Kendaraan</v-btn
         >
@@ -11,7 +12,7 @@
           >Download Template</v-btn
         >
         <div class="mx-2"></div>
-        <v-select
+        <!-- <v-select
           v-model="selectedCabang"
           :items="cabang"
           :disabled="loading"
@@ -22,15 +23,17 @@
           placeholder="Filter Cabang"
           @change="selectCabang(selectedCabang)"
         ></v-select>
-        <div class="mx-2"></div>
+        <div class="mx-2"></div> -->
         <v-text-field
           v-model="search"
+          max-width="100px"
           placeholder="Cari berdasarkan leasing, cabang, atau nomor polisi"
           solo
           dense
           prepend-inner-icon="mdi-magnify"
           @input="debouncedFetchLeasing"
         ></v-text-field>
+        <v-spacer></v-spacer>
       </v-row>
     </div>
     <v-card v-else>

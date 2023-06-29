@@ -1,5 +1,6 @@
 <template>
-  <v-row class="mb-6" no-gutters>
+  <div>
+    <v-row class="mb-6" no-gutters>
     <v-col cols="12" lg="4" xl="3">
       <v-card class="ma-5 pa-5">
         <div>
@@ -36,15 +37,28 @@
     <v-col cols="12" lg="4" xl="3">
       <v-card class="ma-5 pa-5">
         <div>
-          <p class="text-h6 ma-0 primary--text">TOTAL MEMBER EXPIRED</p>
-          <p class="text-body-1 mb-2">Jumlah member expired</p>
+          <p class="text-h6 ma-0 primary--text">TOTAL DATA KENDARAAN</p>
+          <p class="text-body-1 mb-2">Jumlah data kendaraan</p>
           <h1 class="text-h3 ma-0 font-weight-bold">
-            {{ loading ? 0 : homeTotal.expired_members }}
+            {{ loading ? 0 : homeTotal.kendaraan }}
+          </h1>
+        </div>
+      </v-card>
+    </v-col>
+    <v-col cols="12" lg="4" xl="3">
+      <v-card class="ma-5 pa-5">
+        <div>
+          <p class="text-h6 ma-0 primary--text">TOTAL KONFIRMASI PEMBAYARAN</p>
+          <p class="text-body-1 mb-2">Jumlah konfirmasi pembayaran</p>
+          <h1 class="text-h3 ma-0 font-weight-bold">
+            12
           </h1>
         </div>
       </v-card>
     </v-col>
   </v-row>
+   
+  </div>
 </template>
 
 <script>
@@ -71,6 +85,7 @@ export default {
       this.$axios
         .get("home")
         .then((response) => {
+          console.log(response.data.data)
           this.homeTotal = response.data.data;
           this.loading = false;
         })

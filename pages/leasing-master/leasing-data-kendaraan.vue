@@ -308,7 +308,9 @@
         <div class="mb-5"></div>
         <v-row>
           <v-spacer></v-spacer>
-          <v-btn color="red" dark @click="showGantikanDataModal">Batal</v-btn>
+          <v-btn color="red" dark @click="showGantikanData = false"
+            >Batal</v-btn
+          >
           <div class="mx-2"></div>
           <v-btn color="primary" @click="deleteKendaraan">Gantikan Data</v-btn>
         </v-row>

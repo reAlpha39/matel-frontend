@@ -44,8 +44,8 @@ export default {
   },
 
   axios: {
-    baseURL: "https://taurusaplikasi.com/api/",
-    // baseURL: "http://localhost:8080/",
+    // baseURL: "https://taurusaplikasi.com/api/",
+    baseURL: "http://localhost:8080/",
   },
 
   build: { transpile: ["defu"] },
@@ -72,6 +72,7 @@ export default {
           global: true,
           required: true,
           type: "Bearer",
+          expiration: 60 * 60 * 24,
         },
         user: {
           property: false,
@@ -89,6 +90,11 @@ export default {
       logout: "/login",
       // home: "/",
       home: false,
+    },
+    cookie: {
+      options: {
+        expires: 1,
+      },
     },
   },
 };

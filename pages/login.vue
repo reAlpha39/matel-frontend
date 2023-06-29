@@ -24,6 +24,7 @@
                 placeholder="Kata Sandi / Password"
                 outlined
                 @click:append="show1 = !show1"
+                @keydown.enter="userLogin"
               ></v-text-field>
             </v-form>
             <v-spacer></v-spacer>
