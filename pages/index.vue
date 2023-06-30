@@ -18,7 +18,7 @@
           <p class="text-h6 ma-0 primary--text">TOTAL MEMBER TRIAL</p>
           <p class="text-body-1 mb-2">Jumlah member trial</p>
           <h1 class="text-h3 ma-0 font-weight-bold">
-            {{ loading ? 0 : homeTotal.expired_members }}
+            {{ loading ? 0 : homeTotal.trial_members }}
           </h1>
         </div>
       </v-card>
@@ -37,6 +37,17 @@
     <v-col cols="12" lg="4" xl="3">
       <v-card class="ma-5 pa-5">
         <div>
+          <p class="text-h6 ma-0 primary--text">TOTAL MEMBER EXPIRED</p>
+          <p class="text-body-1 mb-2">Jumlah member expired</p>
+          <h1 class="text-h3 ma-0 font-weight-bold">
+            {{ loading ? 0 : homeTotal.expired_members }}
+          </h1>
+        </div>
+      </v-card>
+    </v-col>
+    <v-col cols="12" lg="4" xl="3">
+      <v-card class="ma-5 pa-5">
+        <div>
           <p class="text-h6 ma-0 primary--text">TOTAL DATA KENDARAAN</p>
           <p class="text-body-1 mb-2">Jumlah data kendaraan</p>
           <h1 class="text-h3 ma-0 font-weight-bold">
@@ -48,8 +59,8 @@
     <v-col cols="12" lg="4" xl="3">
       <v-card class="ma-5 pa-5">
         <div>
-          <p class="text-h6 ma-0 primary--text">TOTAL KONFIRMASI PEMBAYARAN</p>
-          <p class="text-body-1 mb-2">Jumlah konfirmasi pembayaran</p>
+          <p class="text-h6 ma-0 primary--text">KONFIRMASI PEMBAYARAN</p>
+          <p class="text-body-1 mb-2">Total konfirmasi pembayaran</p>
           <h1 class="text-h3 ma-0 font-weight-bold">
             12
           </h1>
