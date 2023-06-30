@@ -144,9 +144,13 @@
       :options.sync="options"
       :loading="loading"
       :footer-props="{
-        'items-per-page-options': [20, 50, 100, 500, 1000, 1000000],
+        'items-per-page-options': [20, 50, 100, 500, 1000, limit],
       }"
     >
+    <template v-slot:item.id="{ item, index }">
+      <td>{{ index + 1 }}</td> <!-- Display the index -->
+      <!-- Add more table columns as needed -->
+    </template>
       <template v-slot:item.sisa_hutang="{ item }">
         {{ formatCurrency(item.sisa_hutang) }}
       </template>
@@ -235,7 +239,6 @@ export default {
     return {
       items: [],
       loading: false,
-      limit: 5,
       options: {},
       totalPages: 10,
       total: 10,
@@ -271,17 +274,11 @@ export default {
         { text: "Actions", value: "actions" },
       ];
     },
-    numberedItems() {
-      const startIndex = (this.currentPage - 1) * this.limit;
-      return this.items.map((item, index) => ({
-        ...item,
-        id: startIndex + index + 1,
-      }));
-    },
+   
   },
   mounted() {
-    this.fetchLeasing();
     this.fetchLeasingTotal();
+    this.fetchLeasing();
   },
   methods: {
     fetchLeasingTotal() {
@@ -290,10 +287,10 @@ export default {
         .get("home")
         .then((response) => {
           this.total = response.data.data.leasing;
+          this.limit = response.data.data.kendaraan;
           this.loading = false;
         })
         .catch((error) => {
-          console.error(error);
           this.loading = false;
         })
         .finally(() => {

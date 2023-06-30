@@ -178,7 +178,7 @@
     <v-dialog v-model="deleteDialog" max-width="400px">
       <v-card>
         <v-card-title>Konfirmasi Hapus</v-card-title>
-        <v-card-text> Anda yakin akan menghapus data ini? </v-card-text>
+        <v-card-text>Apakah anda yakin akan menghapus data Leasing, Semua data Leasing terkait akan dihapus?</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="secondary" @click="cancelDelete">Batal</v-btn>

@@ -72,7 +72,6 @@ export default {
           global: true,
           required: true,
           type: "Bearer",
-          expiration: 60 * 60 * 24,
         },
         user: {
           property: false,
