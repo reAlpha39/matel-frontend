@@ -14,7 +14,6 @@
         <div class="mx-2"></div>
         <v-text-field
           v-model="search"
-          max-width="100px"
           placeholder="Cari berdasarkan nomor polisi"
           solo
           dense
@@ -24,7 +23,7 @@
         <v-spacer></v-spacer>
       </v-row>
     </div>
-    <v-card v-else>
+    <v-card v-else class="mt-5">
       <v-row class="pa-5">
         <v-col cols="12">
           <div class="text-h6">Detail Leasing</div>
@@ -146,7 +145,7 @@
       :options.sync="options"
       :loading="loading"
       :footer-props="{
-        'items-per-page-options': [20, 50, 100, 500, 1000],
+        'items-per-page-options': [20, 50, 100, 500, 1000, 1000000],
       }"
     >
       <template v-slot:item.sisa_hutang="{ item }">
@@ -154,10 +153,14 @@
       </template>
       <template v-slot:item.actions="{ item }">
         <v-btn color="primary" height="27px" dark @click="viewDetail(item.id)">
-          Detail
+          <div class="text-caption">
+            Detail
+          </div>
         </v-btn>
         <v-btn color="red" height="27px" dark @click="deleteItem(item.id)">
-          Hapus
+          <div class="text-caption">
+            Hapus
+          </div>
         </v-btn>
       </template>
     </v-data-table>
