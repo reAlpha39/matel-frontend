@@ -4,7 +4,7 @@
       <div>Data Kendaraan</div>
       <v-row class="pt-5 mx-1">
         
-        <v-btn height="40px" color="primary" @click="showUploadModal = true"
+        <v-btn height="40px" color="primary" @click="uploadModal"
           >Upload Data Kendaraan</v-btn
         >
         <div class="mx-2"></div>
@@ -14,13 +14,12 @@
         <div class="mx-2"></div>
         <v-text-field
           v-model="search"
-          placeholder="Cari berdasarkan nomor polisi"
+          placeholder="Cari berdasarkan leasing, cabang atau nomor polisi"
           solo
           dense
           prepend-inner-icon="mdi-magnify"
           @input="debouncedFetchLeasing"
         ></v-text-field>
-        <v-spacer></v-spacer>
       </v-row>
     </div>
     <v-card v-else class="mt-5">
@@ -207,7 +206,7 @@
           <v-btn
             color="red white--text"
             height="32"
-            @click="showUploadModal = false"
+            @click="uploadModal"
           >
             Batal
           </v-btn>
@@ -394,6 +393,11 @@ export default {
     },
     editItem(itemId) {},
     deleteItem(itemId) {},
+    uploadModal() {
+      this.showUploadModal = !this.showUploadModal;
+      this.file = null;
+      this.success = false;
+    },
     showDownloadModal() {
       this.showModal = !this.showModal;
       this.selectedDownloadCabang = null;
