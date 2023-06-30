@@ -8,7 +8,7 @@
           >Upload Data Kendaraan</v-btn
         >
         <div class="mx-2"></div>
-        <v-btn height="40px" color="purple" dark @click="showModal = true"
+        <v-btn height="40px" color="purple" dark @click="downloadTemplate"
           >Download Template</v-btn
         >
         <div class="mx-2"></div>
@@ -157,11 +157,11 @@
             Detail
           </div>
         </v-btn>
-        <v-btn color="red" height="27px" dark @click="deleteItem(item.id)">
+        <!-- <v-btn color="red" height="27px" dark @click="deleteItem(item.id)">
           <div class="text-caption">
             Hapus
           </div>
-        </v-btn>
+        </v-btn> -->
       </template>
     </v-data-table>
 
