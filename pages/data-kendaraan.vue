@@ -12,22 +12,10 @@
           >Download Template</v-btn
         >
         <div class="mx-2"></div>
-        <!-- <v-select
-          v-model="selectedCabang"
-          :items="cabang"
-          :disabled="loading"
-          solo
-          dense
-          item-text="nama_cabang"
-          item-value="id"
-          placeholder="Filter Cabang"
-          @change="selectCabang(selectedCabang)"
-        ></v-select>
-        <div class="mx-2"></div> -->
         <v-text-field
           v-model="search"
           max-width="100px"
-          placeholder="Cari berdasarkan leasing, cabang, atau nomor polisi"
+          placeholder="Cari berdasarkan nomor polisi"
           solo
           dense
           prepend-inner-icon="mdi-magnify"
@@ -153,7 +141,7 @@
     <v-data-table
       v-if="!isDetail"
       :headers="headers"
-      :items="numberedItems"
+      :items="items"
       :search="search"
       :options.sync="options"
       :loading="loading"
