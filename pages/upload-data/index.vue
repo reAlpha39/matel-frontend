@@ -59,7 +59,7 @@
               :loading="isLoading"
               @click="uploadFile"
             >
-              Simpan
+              Upload
             </v-btn>
           </v-row>
           <div class="py-2"></div>
@@ -81,7 +81,7 @@
             </v-responsive>
             <div class="px-2"></div>
             <v-btn color="purple darken-4 white--text" height="40">
-              Simpan
+              Upload
             </v-btn>
           </v-row>
         </div>

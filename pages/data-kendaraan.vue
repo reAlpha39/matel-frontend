@@ -228,7 +228,7 @@
             :loading="isLoading"
             @click="uploadFile"
           >
-            Simpan
+            Upload
           </v-btn>
         </v-row>
         <div class="py-2"></div>
