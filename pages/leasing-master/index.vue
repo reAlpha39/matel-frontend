@@ -13,7 +13,6 @@
         :headers="headers"
         :items="items"
         :search="search"
-        :options.sync="options"
         :loading="loading"
       >
         <template v-slot:item.actions="{ item }">
