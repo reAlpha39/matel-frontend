@@ -82,6 +82,7 @@ export default {
           logout: false,
           user: { url: "profil", method: "get" },
         },
+        autoLogout: false
       },
     },
     redirect: {
@@ -89,11 +90,6 @@ export default {
       logout: "/login",
       // home: "/",
       home: false,
-    },
-    cookie: {
-      options: {
-        expires: 1,
-      },
     },
   },
 };

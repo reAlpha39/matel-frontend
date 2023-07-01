@@ -7,7 +7,7 @@
           v-if="cabang.length > 0"
           height="40px"
           color="primary"
-          @click="showUploadModal = true"
+          @click="showUpload"
           >Upload Data Kendaraan</v-btn
         >
         <div v-if="cabang.length > 0" class="mx-2"></div>
@@ -184,7 +184,6 @@
       :headers="headers"
       :items="items"
       :search="search"
-      :options.sync="options"
       :loading="loading"
     >
       <template v-slot:item.sisa_hutang="{ item }">
@@ -337,7 +336,6 @@ export default {
         page: 1,
         itemsPerPage: 100,
       },
-      limit: 5,
       options: {},
       totalPages: 10,
       total: 10,
@@ -484,7 +482,6 @@ export default {
           })
           .then((response) => {
             this.formData = null;
-            this.formData = null;
             this.success = true;
             this.isLoading = false;
             this.time = response.data.data;
@@ -552,7 +549,6 @@ export default {
                 },
               })
               .then((response) => {
-                console.log("SUCCESS");
                 this.showGantikanData = false;
                 this.getLeasing();
               })
@@ -594,6 +590,10 @@ export default {
     },
     editItem(itemId) {},
     deleteItem(itemId) {},
+    showUpload() {
+      this.showUploadModal = !this.showUploadModal;
+      this.success = false
+    },
     showDownloadModal() {
       this.showModal = !this.showModal;
       this.selectedDownloadCabang = null;

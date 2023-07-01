@@ -132,24 +132,19 @@
         </v-col>
       </v-row>
     </v-card>
-    <!-- <div class="text-body-2 px-2 mb-2" v-if="!isDetail">
+    <div class="text-medium mb-2" v-if="!isDetail">
       Total Data: {{ total }}
-    </div> -->
+    </div>
 
     <v-data-table
       v-if="!isDetail"
       :headers="headers"
       :items="items"
       :search="search"
-      :options.sync="options"
       :loading="loading"
-      :footer-props="{
-        'items-per-page-options': [20, 50, 100, 500, 1000, limit],
-      }"
     >
     <template v-slot:item.id="{ item, index }">
-      <td>{{ index + 1 }}</td> <!-- Display the index -->
-      <!-- Add more table columns as needed -->
+      <td>{{ index + 1 }}</td> 
     </template>
       <template v-slot:item.sisa_hutang="{ item }">
         {{ formatCurrency(item.sisa_hutang) }}
@@ -241,7 +236,7 @@ export default {
       loading: false,
       options: {},
       totalPages: 10,
-      total: 10,
+      total: 0,
       search: "",
       currentPage: 1,
       limit: 1000,
@@ -286,8 +281,7 @@ export default {
       this.$axios
         .get("home")
         .then((response) => {
-          this.total = response.data.data.leasing;
-          this.limit = response.data.data.kendaraan;
+          this.total = response.data.data.kendaraan;
           this.loading = false;
         })
         .catch((error) => {
@@ -308,11 +302,11 @@ export default {
           },
         })
         .then((response) => {
+          this.items = [];
           this.items = response.data.data;
           this.totalPages = Math.ceil(response.data.data.total / this.limit);
         })
         .catch((error) => {
-          console.log(error);
         })
         .finally(() => {
           this.loading = false;
@@ -337,21 +331,18 @@ export default {
           })
           .then((response) => {
             this.formData = null;
-            this.formData = null;
             this.success = true;
             this.isLoading = false;
-            this.time = response.data.data;
             this.showUploadModal = false;
             this.selectedUploadCabang = null;
             this.file = null;
-            this.fetchLeasing();
+            this.fetchLeasing()
           })
           .catch((error) => {
             this.showUploadModal = false;
             this.isError = true;
             this.isLoading = false;
             this.error = error.message;
-            console.log("Error");
           });
       }
     },
