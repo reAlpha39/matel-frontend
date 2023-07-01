@@ -142,6 +142,9 @@
       :items="items"
       :search="search"
       :loading="loading"
+      :footer-props="{
+        'items-per-page-options': [20, 100, 500, 1000, total > 10000 ? total : 10000 ],
+      }"
     >
     <template v-slot:item.id="{ item, index }">
       <td>{{ index + 1 }}</td> 
@@ -235,11 +238,10 @@ export default {
       items: [],
       loading: false,
       options: {},
-      totalPages: 10,
       total: 0,
       search: "",
       currentPage: 1,
-      limit: 1000,
+      limit: -1,
       debouncedFetchLeasing: debounce(this.fetchLeasing, 300),
       isDetail: false,
       selectedLeasing: null,
@@ -247,7 +249,7 @@ export default {
       selectedDownloadCabang: null,
       selectedUploadCabang: null,
       showModal: false,
-      showUploadModal: false,
+      showUploadModal: false, 
       isLoading: false,
       success: false,
       isError: false,
@@ -304,7 +306,6 @@ export default {
         .then((response) => {
           this.items = [];
           this.items = response.data.data;
-          this.totalPages = Math.ceil(response.data.data.total / this.limit);
         })
         .catch((error) => {
         })
@@ -336,6 +337,7 @@ export default {
             this.showUploadModal = false;
             this.selectedUploadCabang = null;
             this.file = null;
+            this.fetchLeasingTotal()
             this.fetchLeasing()
           })
           .catch((error) => {
