@@ -69,12 +69,16 @@
       </v-card>
     </v-col>
   </v-row>
-  <v-card class="mx-5 pa-10">
-    <div class="text-medium font-weight-bold">
-      Data Kendaraan Per Leasing
-    </div>
-    <LeasingChart/>
-  </v-card>
+  <v-row>
+    <v-col cols="12" lg="6">
+      <v-card class="mx-3 ml-3 pa-10">
+        <div class="text-medium font-weight-bold">
+          Data Kendaraan Per Leasing
+        </div>
+        <LeasingChart/>
+      </v-card>
+    </v-col>
+  </v-row>
 </div>
 </template>
 

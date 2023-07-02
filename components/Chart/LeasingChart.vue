@@ -29,6 +29,9 @@ export default {
       },
       chartOptions: {
         responsive: true,
+        legend: {
+        display: false
+      }
       },
     };
   },
@@ -36,14 +39,14 @@ export default {
     fetchChartData() {
       this.$axios.get('home')
         .then((response) => {
-          console.log(response.data.data.leasing_chart)
+          // console.log(this.$refs.bar.chart)
           const leasingChart = response.data.data.leasing_chart;
           this.chartData.labels = leasingChart.map(item => item.leasing_name);
+          this.chartData.datasets[0].label = ''
           this.chartData.datasets[0].data = leasingChart.map(item => item.count);
           this.chartData.datasets[0].backgroundColor = this.generateRandomColors(leasingChart.length);
         })
         .catch(error => {
-          console.error('Error fetching data:', error);
         });
     },
     generateRandomColors(numColors) {

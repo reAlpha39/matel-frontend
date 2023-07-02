@@ -4,12 +4,16 @@
       <div>Data Kendaraan</div>
       <v-row class="pt-5 mx-1">
         
-        <v-btn height="40px" color="primary" @click="uploadModal"
+        <v-btn height="40px" color="primary" @click="uploadModal(false)"
           >Upload Data Kendaraan</v-btn
         >
         <div class="mx-2"></div>
         <v-btn height="40px" color="purple" dark @click="downloadTemplate"
-          >Download Template</v-btn
+        >Download Template</v-btn
+        >
+        <div class="mx-2"></div>
+        <v-btn height="40px" color="orange" dark @click="uploadModal(true)"
+          >Update Semua Data Kendaraan</v-btn
         >
         <div class="mx-2"></div>
         <v-text-field
@@ -183,7 +187,9 @@
     <v-dialog v-model="showUploadModal" max-width="500">
       <v-card class="pa-5">
         <div class="text-h6 purple--text text--darken-4">UPLOAD DATA</div>
-        <div class="py-1"></div>
+        <div v-if="isGantikanData" class="text-medium red--text">
+          Gantikan data akan mengganti seluruh data kendaraan saat ini
+        </div>
 
         <v-alert v-show="isError === true" type="error">
           <div>
@@ -214,11 +220,22 @@
           </v-btn>
           <div class="mx-2"></div>
           <v-btn
+          v-if="isGantikanData"
             color="primary white--text"
             height="32"
             :disabled="isLoading || success || file === null"
             :loading="isLoading"
-            @click="uploadFile"
+            @click=" updateAllKendaraan"
+          >
+            Upload
+          </v-btn>
+          <v-btn
+          v-else
+            color="primary white--text"
+            height="32"
+            :disabled="isLoading || success || file === null"
+            :loading="isLoading"
+            @click="  uploadFile"
           >
             Upload
           </v-btn>
@@ -240,6 +257,7 @@ export default {
       options: {},
       total: 0,
       search: "",
+      isGantikanData: false,
       currentPage: 1,
       limit: -1,
       debouncedFetchLeasing: debounce(this.fetchLeasing, 300),
@@ -382,8 +400,21 @@ export default {
       this.isDetail = true;
     },
     editItem(itemId) {},
-    deleteItem(itemId) {},
-    uploadModal() {
+    updateAllKendaraan() {
+      this.loading = true;
+      this.$axios
+        .delete("delete-all-kendaraan")
+        .then((response) => {
+          this.uploadFile()
+        })
+        .catch((error) => {
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    uploadModal(data) {
+      this.isGantikanData = data
       this.showUploadModal = !this.showUploadModal;
       this.file = null;
       this.success = false;

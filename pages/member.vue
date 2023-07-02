@@ -5,7 +5,8 @@
         <v-text-field
           v-model="search"
           placeholder="Cari member berdasarkan nama"
-          outlined
+          dense
+          solo
           prepend-inner-icon="mdi-magnify"
           @input="searchUsers"
         ></v-text-field>
@@ -140,7 +141,11 @@ export default {
   methods: {
     fetchUser() {
       this.$axios
-        .get("member")
+        .get("member", {
+          params: {
+            search: this.search,
+          }
+        })
         .then((response) => {
           if (response.data.data === null) {
             this.users = [];
