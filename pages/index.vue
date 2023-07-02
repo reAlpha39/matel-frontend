@@ -1,4 +1,5 @@
 <template>
+
   <div>
     <v-row class="mb-6" no-gutters>
     <v-col cols="12" lg="4" xl="3">
@@ -68,46 +69,52 @@
       </v-card>
     </v-col>
   </v-row>
-   
-  </div>
+  <v-card class="mx-5 pa-10">
+    <div class="text-medium font-weight-bold">
+      Data Kendaraan Per Leasing
+    </div>
+    <LeasingChart/>
+  </v-card>
+</div>
 </template>
 
 <script>
+import LeasingChart from '../components/Chart/LeasingChart.vue';
 export default {
-  name: "IndexPage",
-  middleware: "auth",
-  data() {
-    return {
-      loading: false,
-      homeTotal: {
-        leasing: 0,
-        expired_members: 0,
-        premium_members: 0,
-        trial_members: 0,
-      },
-    };
-  },
-  mounted() {
-    this.fetchData();
-  },
-  methods: {
-    fetchData() {
-      this.loading = true;
-      this.$axios
-        .get("home")
-        .then((response) => {
-          console.log(response.data.data)
-          this.homeTotal = response.data.data;
-          this.loading = false;
-        })
-        .catch((error) => {
-          console.error(error);
-          this.loading = false;
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+    name: "IndexPage",
+    middleware: "auth",
+    data() {
+        return {
+            loading: false,
+            homeTotal: {
+                leasing: 0,
+                expired_members: 0,
+                premium_members: 0,
+                trial_members: 0,
+            },
+        };
     },
-  },
+    mounted() {
+        this.fetchData();
+    },
+    methods: {
+        fetchData() {
+            this.loading = true;
+            this.$axios
+                .get("home")
+                .then((response) => {
+                this.homeTotal = response.data.data;
+                this.loading = false;
+            })
+                .catch((error) => {
+                console.error(error);
+                this.loading = false;
+            })
+                .finally(() => {
+                this.loading = false;
+            });
+        },
+    },
+    components: { LeasingChart }
 };
 </script>
