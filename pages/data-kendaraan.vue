@@ -148,8 +148,6 @@
       :loading="loading"
       hide-default-footer
       disable-pagination
-       @page-count="currentPage = $event"
-      @current-items="fetchLeasing"
     >
     <template v-slot:item.id="{ item, index }">
       <td>{{ index + 1 }}</td> 
@@ -170,15 +168,16 @@
         </v-btn> -->
       </template>
       <template v-slot:footer>
-    <v-pagination
-    class="py-5"
-      v-model="currentPage"
-      :length="Math.ceil(total / perPage)"
-      prev-icon="mdi-chevron-left"
-      next-icon="mdi-chevron-right"
-      :total-visible="12"
-      :disabled="loading"
-    ></v-pagination>
+        <v-pagination
+  class="py-5"
+  v-model="currentPage"
+  :length="Math.ceil(total / perPage)"
+  prev-icon="mdi-chevron-left"
+  next-icon="mdi-chevron-right"
+  :total-visible="12"
+  :disabled="loading"
+  @input="handlePageChange"
+></v-pagination>
   </template>
     </v-data-table>
 
@@ -237,7 +236,7 @@
             height="32"
             :disabled="isLoading || success || file === null"
             :loading="isLoading"
-            @click=" updateAllKendaraan"
+            @click="updateAllKendaraan"
           >
             Upload
           </v-btn>
@@ -247,7 +246,7 @@
             height="32"
             :disabled="isLoading || success || file === null"
             :loading="isLoading"
-            @click="  uploadFile"
+            @click="uploadFile"
           >
             Upload
           </v-btn>
@@ -309,6 +308,11 @@ export default {
     this.fetchLeasing();
   },
   methods: {
+    handlePageChange(page) {
+    this.currentPage = page;
+
+    this.fetchLeasing();
+  },
     fetchLeasingTotal() {
       this.loading = true;
       this.$axios
