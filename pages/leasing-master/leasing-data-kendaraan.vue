@@ -16,7 +16,7 @@
           height="40px"
           color="purple"
           dark
-          @click="showModal = true"
+          @click="downloadTemplate"
           >Download Template</v-btn
         >
         <div v-if="cabang.length > 0" class="mx-2"></div>
@@ -31,7 +31,7 @@
         <div v-if="cabang.length > 0" class="mx-2"></div>
         <v-select
           v-model="selectedCabang"
-          :items="cabang"
+          :items="cabangFilter"
           :disabled="loading"
           solo
           dense
@@ -260,7 +260,7 @@
       <v-card class="pa-5">
         <div class="text-h6">Download Template</div>
 
-        <div class="mb-5"></div>
+        <!-- <div class="mb-5"></div>
         <v-select
           v-model="selectedDownloadCabang"
           :items="cabang"
@@ -270,7 +270,7 @@
           dense
           placeholder="Pilih Cabang"
         ></v-select>
-        <div class="mb-5"></div>
+        <div class="mb-5"></div> -->
         <v-row>
           <v-spacer></v-spacer>
           <v-btn color="red" dark @click="showDownloadModal">Batal</v-btn>
@@ -331,6 +331,12 @@ export default {
     return {
       items: [],
       cabang: [],
+      cabangFilter: [
+        {
+          'id': '',
+          'nama_cabang': 'All'
+        }
+      ],
       loading: false,
       pagination: {
         page: 1,
@@ -409,6 +415,7 @@ export default {
         })
         .then((response) => {
           this.cabang = response.data.data.cabang;
+          this.cabangFilter.push.apply(this.cabangFilter, this.cabang)
         })
         .catch((error) => {
           console.error(error);
@@ -582,10 +589,10 @@ export default {
     },
     selectCabang(item) {
       this.selectedCabang = item;
-      const cabangFiltered = this.cabang.filter(
+      const cabangFiltered = this.cabangFilter.filter(
         (item) => item.id === this.selectedCabang
       );
-      this.cabangName = cabangFiltered[0].nama_cabang;
+      this.cabangName = cabangFiltered[0].nama_cabang === 'All' ? '' : cabangFiltered[0].nama_cabang;
       this.fetchLeasing();
     },
     editItem(itemId) {},
