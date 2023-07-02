@@ -146,9 +146,10 @@
       :items="items"
       :search="search"
       :loading="loading"
-      :footer-props="{
-        'items-per-page-options': [20, 100, 500, 1000, total > 10000 ? total : 10000 ],
-      }"
+      hide-default-footer
+      disable-pagination
+       @page-count="currentPage = $event"
+      @current-items="fetchLeasing"
     >
     <template v-slot:item.id="{ item, index }">
       <td>{{ index + 1 }}</td> 
@@ -168,6 +169,17 @@
           </div>
         </v-btn> -->
       </template>
+      <template v-slot:footer>
+    <v-pagination
+    class="py-5"
+      v-model="currentPage"
+      :length="Math.ceil(total / perPage)"
+      prev-icon="mdi-chevron-left"
+      next-icon="mdi-chevron-right"
+      :total-visible="12"
+      :disabled="loading"
+    ></v-pagination>
+  </template>
     </v-data-table>
 
     <v-dialog v-model="showModal" max-width="500">
@@ -259,6 +271,7 @@ export default {
       search: "",
       isGantikanData: false,
       currentPage: 1,
+      perPage: 20,
       limit: -1,
       debouncedFetchLeasing: debounce(this.fetchLeasing, 300),
       isDetail: false,
@@ -317,9 +330,9 @@ export default {
         .get("kendaraan", {
           params: {
             search: this.search,
-            page: this.options.page,
-            limit: this.limit,
-          },
+            page: this.currentPage,
+            limit: this.perPage,
+      },
         })
         .then((response) => {
           this.items = [];
