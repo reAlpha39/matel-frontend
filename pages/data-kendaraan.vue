@@ -168,17 +168,17 @@
         </v-btn> -->
       </template>
       <template v-slot:footer>
-        <v-pagination
-  class="py-5"
-  v-model="currentPage"
-  :length="Math.ceil(total / perPage)"
-  prev-icon="mdi-chevron-left"
-  next-icon="mdi-chevron-right"
-  :total-visible="12"
-  :disabled="loading"
-  @input="handlePageChange"
-></v-pagination>
-  </template>
+          <v-pagination
+          class="py-5"
+          v-model="currentPage"
+          :length="Math.ceil(total / perPage)"
+          prev-icon="mdi-chevron-left"
+          next-icon="mdi-chevron-right"
+          :total-visible="12"
+          :disabled="loading"
+          @input="handlePageChange"
+        ></v-pagination>
+        </template>
     </v-data-table>
 
     <v-dialog v-model="showModal" max-width="500">
