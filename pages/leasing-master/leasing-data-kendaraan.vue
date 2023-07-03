@@ -507,15 +507,15 @@ export default {
       }
     },
     downloadTemplate() {
-      const endpoint = "/download-template";
+      const endpoint = "/download-template-cabang";
       const url = this.$axios.defaults.baseURL + endpoint;
 
       this.$axios
-        .get("download-template")
+        .get("download-template-cabang")
         .then((response) => {
           const downloadLink = document.createElement("a");
           const url = window.URL.createObjectURL(new Blob([response.data]));
-          const filename = "leasing-template.csv";
+          const filename = "leasing-template-cabang.csv";
           downloadLink.href = url;
           downloadLink.setAttribute("download", filename);
           document.body.appendChild(downloadLink);
