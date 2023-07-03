@@ -44,8 +44,8 @@ export default {
   },
 
   axios: {
-    // baseURL: "https://taurusaplikasi.com/api/",
-    baseURL: "http://localhost:8080/",
+    baseURL: "https://taurusaplikasi.com/api/",
+    // baseURL: "http://localhost:8080/",
   },
 
   build: { transpile: ["defu"] },
@@ -54,7 +54,7 @@ export default {
 
   router: {
     middleware: ["auth"],
-  },
+  },          
 
   serverMiddleware: [
     (req, res, next) => {
