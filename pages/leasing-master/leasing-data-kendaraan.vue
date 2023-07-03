@@ -193,9 +193,9 @@
         <v-btn color="primary" height="27px" dark @click="viewDetail(item.id)">
           Detail
         </v-btn>
-        <v-btn color="red" height="27px" dark @click="deleteItem(item.id)">
+        <!-- <v-btn color="red" height="27px" dark @click="deleteItem(item.id)">
           Hapus
-        </v-btn>
+        </v-btn> -->
       </template>
     </v-data-table>
 
