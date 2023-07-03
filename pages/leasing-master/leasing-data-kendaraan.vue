@@ -482,7 +482,7 @@ export default {
         this.isError = false;
         this.isLoading = true;
         this.$axios
-          .post("upload-leasing", this.formData, {
+          .post("upload-leasing-per-cabang", this.formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
