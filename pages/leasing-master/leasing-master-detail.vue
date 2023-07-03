@@ -101,18 +101,6 @@
               outlined
               label="Nama Leasing"
             ></v-text-field>
-            <v-text-field
-              v-model="editLeasing.nama_pic"
-              :rules="nameRules"
-              outlined
-              label="Nama PIC"
-            ></v-text-field>
-            <v-text-field
-              v-model="editLeasing.no_hp_pic"
-              :rules="nameRules"
-              outlined
-              label="No HP PIC"
-            ></v-text-field>
           </v-form>
         </v-card-text>
         <v-card-actions>
