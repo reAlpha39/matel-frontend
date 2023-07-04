@@ -8,7 +8,7 @@
           <p class="text-h6 ma-0 primary--text">TOTAL LEASING</p>
           <p class="text-body-1 mb-2">Jumlah leasing</p>
           <h1 class="text-h3 ma-0 font-weight-bold">
-            {{ loading ? 0 : homeTotal.leasing }}
+            {{ loading ? 'Loading...' : homeTotal.leasing }}
           </h1>
         </div>
       </v-card>
@@ -19,7 +19,7 @@
           <p class="text-h6 ma-0 primary--text">TOTAL MEMBER TRIAL</p>
           <p class="text-body-1 mb-2">Jumlah member trial</p>
           <h1 class="text-h3 ma-0 font-weight-bold">
-            {{ loading ? 0 : homeTotal.trial_members }}
+            {{ loading ? 'Loading...' : homeTotal.trial_members }}
           </h1>
         </div>
       </v-card>
@@ -30,7 +30,7 @@
           <p class="text-h6 ma-0 primary--text">TOTAL MEMBER PREMIUM</p>
           <p class="text-body-1 mb-2">Jumlah member premium</p>
           <h1 class="text-h3 ma-0 font-weight-bold">
-            {{ loading ? 0 : homeTotal.premium_members }}
+            {{ loading ? 'Loading...' : homeTotal.premium_members }}
           </h1>
         </div>
       </v-card>
@@ -41,7 +41,7 @@
           <p class="text-h6 ma-0 primary--text">TOTAL MEMBER EXPIRED</p>
           <p class="text-body-1 mb-2">Jumlah member expired</p>
           <h1 class="text-h3 ma-0 font-weight-bold">
-            {{ loading ? 0 : homeTotal.expired_members }}
+            {{ loading ? 'Loading...' : homeTotal.expired_members }}
           </h1>
         </div>
       </v-card>
@@ -52,7 +52,7 @@
           <p class="text-h6 ma-0 primary--text">TOTAL DATA KENDARAAN</p>
           <p class="text-body-1 mb-2">Jumlah data kendaraan</p>
           <h1 class="text-h3 ma-0 font-weight-bold">
-            {{ loading ? 0 : homeTotal.kendaraan }}
+            {{ loading ? 'Loading...' : homeTotal.kendaraan }}
           </h1>
         </div>
       </v-card>

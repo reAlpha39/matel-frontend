@@ -137,7 +137,7 @@
       </v-row>
     </v-card>
     <div class="text-medium mb-2" v-if="!isDetail">
-      Total Data: {{ total }}
+      Total Data: {{ loading ? 'Loading...' : total }}
     </div>
 
     <v-data-table
