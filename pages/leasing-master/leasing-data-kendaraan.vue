@@ -260,17 +260,6 @@
       <v-card class="pa-5">
         <div class="text-h6">Download Template</div>
 
-        <!-- <div class="mb-5"></div>
-        <v-select
-          v-model="selectedDownloadCabang"
-          :items="cabang"
-          item-text="nama_cabang"
-          item-value="id"
-          solo
-          dense
-          placeholder="Pilih Cabang"
-        ></v-select>
-        <div class="mb-5"></div> -->
         <v-row>
           <v-spacer></v-spacer>
           <v-btn color="red" dark @click="showDownloadModal">Batal</v-btn>

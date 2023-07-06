@@ -91,41 +91,41 @@
     </v-dialog>
 
     <v-dialog v-model="editDialog" max-width="1000px" max-height="1000px">
-      <v-card>
-        <v-card-title>Edit Leasing</v-card-title>
-        <v-card-text>
-          <v-form ref="editForm">
-            <v-text-field
-              v-model="editLeasing.nama_cabang"
-              :rules="nameRules"
-              outlined
-              label="Nama Leasing"
-            ></v-text-field>
-          </v-form>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" min-width="160px" @click="updateLeasing"
-            >Edit</v-btn
-          >
-          <v-btn color="secondary" min-width="160px" @click="cancelEdit"
-            >Batal</v-btn
-          >
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+  <v-card>
+    <v-card-title>Edit Cabang</v-card-title>
+    <v-card-text>
+      <v-form ref="editForm">
+        <v-text-field
+          v-model="editLeasing.nama_cabang"
+          :rules="nameRules"
+          outlined
+          label="Nama Cabang"
+        ></v-text-field>
+      </v-form>
+    </v-card-text>
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn color="primary" min-width="160px" @click="updateCabang">
+        Edit
+      </v-btn>
+      <v-btn color="secondary" min-width="160px" @click="cancelEdit">
+        Batal
+      </v-btn>
+    </v-card-actions>
+  </v-card>
+</v-dialog>
 
-    <v-dialog v-model="deleteDialog" max-width="400px">
-      <v-card>
-        <v-card-title>Konfirmasi Hapus</v-card-title>
-        <v-card-text> Anda yakin akan menghapus data ini? </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="secondary" @click="cancelDelete">Batal</v-btn>
-          <v-btn color="red" dark @click="deleteItem">Hapus</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+<v-dialog v-model="deleteDialog" max-width="400px">
+  <v-card>
+    <v-card-title>Konfirmasi Hapus</v-card-title>
+    <v-card-text> Anda yakin akan menghapus data ini? </v-card-text>
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn color="secondary" @click="cancelDelete">Batal</v-btn>
+      <v-btn color="red" dark @click="deleteCabang">Hapus</v-btn>
+    </v-card-actions>
+  </v-card>
+</v-dialog>
   </v-card>
 </template>
 
@@ -220,6 +220,37 @@ export default {
             console.error(error);
           });
       }
+    },
+    updateCabang() {
+    if (this.$refs.editForm.validate()) {
+      const { id, ...data } = this.editLeasing;
+      this.$axios
+        .put(`cabang/${id}`, data)
+        .then((response) => {
+          this.$refs.editForm.reset();
+          this.fetchData();
+          this.editLeasing = {
+            id: "",
+            nama_cabang: "",
+          };
+          this.editDialog = false;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  },
+  deleteCabang() {
+    const { id } = this.editLeasing;
+    this.$axios
+      .delete(`cabang/${id}`)
+      .then((response) => {
+        this.fetchData();
+        this.deleteDialog = false;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
     },
     editItem(item) {
       this.editLeasing = { ...item };
